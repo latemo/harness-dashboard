@@ -5,7 +5,7 @@
   "scripts": {
     "setup": "npx tsx scripts/setup.ts",
     "predev": "npx tsx scripts/setup.ts",
-    "dev": "next dev --port 3100",
+    "dev": "next dev --port 3200",
     "build": "npx tsx scripts/setup.ts && next build",
     "start": "next start",
     "lint": "eslint",
