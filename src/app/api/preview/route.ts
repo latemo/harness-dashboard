@@ -111,7 +111,11 @@ function findFileRecursive(dir: string, filename: string, maxDepth: number): str
 }
 
 function getPort(): number {
-  return nextPort++;
+  // 사용 중인 포트 확인 후 비어있는 포트 반환
+  const usedPorts = new Set([...previews.values()].map((s) => s.port));
+  let port = 9100;
+  while (usedPorts.has(port)) port++;
+  return port;
 }
 
 /**
@@ -128,7 +132,7 @@ function getStartCommand(type: string, root: string, port: number): {
       return {
         setupCmd: "C:/flutter/bin/flutter.bat build web --release --no-tree-shake-icons",
         cmd: "npx",
-        args: ["serve", "-l", String(port), "-s", "build/web"],
+        args: ["serve", "-l", `tcp://0.0.0.0:${port}`, "-s", "build/web"],
       };
     case "nextjs":
       return {
@@ -164,10 +168,10 @@ function getStartCommand(type: string, root: string, port: number): {
     case "html":
       return {
         cmd: "npx",
-        args: ["serve", "-l", String(port), "-s", "."],
+        args: ["serve", "-l", `tcp://0.0.0.0:${port}`, "-s", "."],
       };
     default:
-      return { cmd: "npx", args: ["serve", "-l", String(port), "-s", "."] };
+      return { cmd: "npx", args: ["serve", "-l", `tcp://0.0.0.0:${port}`, "-s", "."] };
   }
 }
 
@@ -208,9 +212,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       running: state.status === "running",
       starting: state.status === "starting",
+      error: state.status === "error",
       url: state.url,
       type: state.type,
-      logs: state.logs.slice(-20),
+      logs: state.logs.slice(-30),
     });
   }
 
@@ -220,6 +225,11 @@ export async function POST(req: NextRequest) {
     const existing = previews.get(projectPath);
     if (existing && (existing.status === "running" || existing.status === "starting")) {
       return NextResponse.json({ url: existing.url, status: existing.status, type: existing.type });
+    }
+    // 이전 에러 상태 정리
+    if (existing) {
+      existing.proc?.kill("SIGTERM");
+      previews.delete(projectPath);
     }
 
     const detected = detectProjectType(projectPath);
@@ -318,15 +328,26 @@ export async function POST(req: NextRequest) {
       proc.stdout.on("data", onData);
       proc.stderr.on("data", onData);
 
-      proc.on("close", () => {
+      proc.on("close", (code) => {
         const s = previews.get(projectPath);
         if (s?.proc === proc) {
-          previews.delete(projectPath);
+          if (s.status !== "running") {
+            // 시작 전에 죽었으면 에러 상태로 유지 (5분 후 정리)
+            s.status = "error";
+            s.logs.push(`\n[process exited with code ${code}]\n`);
+            setTimeout(() => {
+              const cur = previews.get(projectPath);
+              if (cur === s) previews.delete(projectPath);
+            }, 300000);
+          } else {
+            previews.delete(projectPath);
+          }
         }
       });
 
-      proc.on("error", () => {
+      proc.on("error", (err) => {
         state.status = "error";
+        state.logs.push(`\n[process error: ${err.message}]\n`);
       });
 
       // 10분 타임아웃
