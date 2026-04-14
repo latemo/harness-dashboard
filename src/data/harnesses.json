@@ -1,0 +1,2306 @@
+[
+  {
+    "id": "01-youtube-production",
+    "number": 1,
+    "name": "youtube-production",
+    "title": "Youtube Production",
+    "description": "YouTube 영상 콘텐츠의 기획→대본→썸네일→SEO를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "content-strategist",
+      "production-reviewer",
+      "scriptwriter",
+      "seo-optimizer",
+      "thumbnail-designer"
+    ],
+    "skillNames": [
+      "hook-writing",
+      "thumbnail-psychology",
+      "youtube-production"
+    ]
+  },
+  {
+    "id": "02-podcast-studio",
+    "number": 2,
+    "name": "podcast-studio",
+    "title": "Podcast Studio",
+    "description": "팟캐스트 콘텐츠의 기획→리서치→대본→쇼노트→배포 전략을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "distribution-manager",
+      "production-reviewer",
+      "researcher",
+      "scriptwriter",
+      "shownote-editor"
+    ],
+    "skillNames": [
+      "audio-storytelling",
+      "interview-techniques",
+      "podcast-growth",
+      "podcast-studio"
+    ]
+  },
+  {
+    "id": "03-newsletter-engine",
+    "number": 3,
+    "name": "newsletter-engine",
+    "title": "Newsletter Engine",
+    "description": "뉴스레터 콘텐츠의 큐레이션→작성→A/B테스트→발송 최적화를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "analyst",
+      "copywriter",
+      "curator",
+      "editor-in-chief",
+      "quality-reviewer"
+    ],
+    "skillNames": [
+      "audience-segmentation",
+      "deliverability-optimization",
+      "email-copywriting",
+      "newsletter-engine"
+    ]
+  },
+  {
+    "id": "04-content-repurposer",
+    "number": 4,
+    "name": "content-repurposer",
+    "title": "Content Repurposer",
+    "description": "1개 원본 콘텐츠를 블로그·SNS·뉴스레터·프레젠테이션·스크립트로 다중 변환하는 에이전트 팀 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "blog-writer",
+      "presentation-builder",
+      "quality-reviewer",
+      "sns-copywriter",
+      "source-analyst"
+    ],
+    "skillNames": [
+      "content-atomization",
+      "content-repurposer",
+      "platform-adaptation"
+    ]
+  },
+  {
+    "id": "05-game-narrative",
+    "number": 5,
+    "name": "game-narrative",
+    "title": "Game Narrative",
+    "description": "게임 스토리·퀘스트·대사·분기 시나리오를 에이전트 팀이 협업하여 설계하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "branch-architect",
+      "dialogue-writer",
+      "narrative-reviewer",
+      "quest-designer",
+      "worldbuilder"
+    ],
+    "skillNames": [
+      "branching-logic",
+      "dialogue-systems",
+      "game-narrative",
+      "quest-design-patterns"
+    ]
+  },
+  {
+    "id": "06-brand-identity",
+    "number": 6,
+    "name": "brand-identity",
+    "title": "Brand Identity",
+    "description": "브랜드 아이덴티티의 네이밍→슬로건→톤앤매너→가이드라인을 에이전트 팀이 협업하여 설계하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "brand-strategist",
+      "copywriter",
+      "identity-reviewer",
+      "naming-specialist",
+      "visual-director"
+    ],
+    "skillNames": [
+      "brand-archetype",
+      "brand-identity",
+      "color-psychology",
+      "naming-methodology"
+    ]
+  },
+  {
+    "id": "07-comic-creator",
+    "number": 7,
+    "name": "comic-creator",
+    "title": "Comic Creator",
+    "description": "4컷/장편 만화 제작의 콘티→대사→이미지생성→편집을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "comic-editor",
+      "dialogue-writer",
+      "image-generator",
+      "quality-reviewer",
+      "storyboarder"
+    ],
+    "skillNames": [
+      "character-design-system",
+      "comic-creator",
+      "panel-composition",
+      "visual-narrative"
+    ]
+  },
+  {
+    "id": "08-course-builder",
+    "number": 8,
+    "name": "course-builder",
+    "title": "Course Builder",
+    "description": "온라인 강의 설계의 커리큘럼→교안→퀴즈→실습과제를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "content-writer",
+      "course-reviewer",
+      "curriculum-designer",
+      "lab-designer",
+      "quiz-maker"
+    ],
+    "skillNames": [
+      "assessment-engineering",
+      "course-builder",
+      "lab-scaffolding",
+      "learning-design"
+    ]
+  },
+  {
+    "id": "09-documentary-research",
+    "number": 9,
+    "name": "documentary-research",
+    "title": "Documentary Research",
+    "description": "다큐멘터리 리서치·구성안·인터뷰질문·내레이션 대본을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "fact-checker",
+      "interviewer",
+      "narrator",
+      "researcher",
+      "story-architect"
+    ],
+    "skillNames": [
+      "documentary-research",
+      "interview-design",
+      "investigative-research",
+      "narrative-structure"
+    ]
+  },
+  {
+    "id": "10-social-media-manager",
+    "number": 10,
+    "name": "social-media-manager",
+    "title": "Social Media Manager",
+    "description": "SNS 콘텐츠 달력·포스트작성·해시태그·성과분석을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "copywriter",
+      "hashtag-analyst",
+      "performance-reviewer",
+      "sns-strategist",
+      "visual-planner"
+    ],
+    "skillNames": [
+      "hashtag-science",
+      "platform-algorithms",
+      "social-media-manager",
+      "viral-copywriting"
+    ]
+  },
+  {
+    "id": "11-book-publishing",
+    "number": 11,
+    "name": "book-publishing",
+    "title": "Book Publishing",
+    "description": "전자책 출판의 원고편집→표지→목차→메타데이터→배포를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "cover-designer",
+      "manuscript-editor",
+      "metadata-manager",
+      "proofreader",
+      "publishing-reviewer"
+    ],
+    "skillNames": [
+      "book-metadata-seo",
+      "book-publishing",
+      "cover-design-psychology",
+      "developmental-editing"
+    ]
+  },
+  {
+    "id": "12-advertising-campaign",
+    "number": 12,
+    "name": "advertising-campaign",
+    "title": "Advertising Campaign",
+    "description": "광고 캠페인의 타깃분석→카피→크리에이티브→미디어플랜을 에이전트 팀이 협업하여 설계하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "campaign-reviewer",
+      "copywriter",
+      "creative-director",
+      "market-analyst",
+      "media-planner"
+    ],
+    "skillNames": [
+      "ad-copywriting-formulas",
+      "advertising-campaign",
+      "media-mix-calculator"
+    ]
+  },
+  {
+    "id": "13-presentation-designer",
+    "number": 13,
+    "name": "presentation-designer",
+    "title": "Presentation Designer",
+    "description": "프레젠테이션의 기획→스토리보드→슬라이드→발표노트를 에이전트 팀이 협업하여 제작하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "deck-reviewer",
+      "info-architect",
+      "presentation-coach",
+      "storyteller",
+      "visual-designer"
+    ],
+    "skillNames": [
+      "data-visualization-guide",
+      "presentation-designer",
+      "slide-layout-patterns"
+    ]
+  },
+  {
+    "id": "14-translation-localization",
+    "number": 14,
+    "name": "translation-localization",
+    "title": "Translation Localization",
+    "description": "다국어 번역·현지화·문화적응·용어관리를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "localizer",
+      "quality-reviewer",
+      "style-harmonizer",
+      "terminology-manager",
+      "translator"
+    ],
+    "skillNames": [
+      "cultural-adaptation-guide",
+      "translation-localization",
+      "translation-quality-mqm"
+    ]
+  },
+  {
+    "id": "15-visual-storytelling",
+    "number": 15,
+    "name": "visual-storytelling",
+    "title": "Visual Storytelling",
+    "description": "비주얼 스토리텔링의 스토리설계→텍스트집필→AI이미지생성→HTML레이아웃→통합편집을 에이전트 팀이 협업하여 제작하는 하네스.",
+    "category": "content-creation",
+    "categoryLabel": "콘텐츠 제작",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "editorial-reviewer",
+      "essay-writer",
+      "image-prompter",
+      "layout-builder",
+      "story-architect"
+    ],
+    "skillNames": [
+      "image-prompt-engineering",
+      "narrative-structure-patterns",
+      "visual-storytelling"
+    ]
+  },
+  {
+    "id": "16-fullstack-webapp",
+    "number": 16,
+    "name": "fullstack-webapp",
+    "title": "Fullstack Webapp",
+    "description": "풀스택 웹앱의 요구사항→설계→프론트엔드→백엔드→테스트→배포를 에이전트 팀이 협업하여 개발하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "architect",
+      "backend-dev",
+      "devops-engineer",
+      "frontend-dev",
+      "qa-engineer"
+    ],
+    "skillNames": [
+      "api-security-checklist",
+      "component-patterns",
+      "fullstack-webapp"
+    ]
+  },
+  {
+    "id": "17-mobile-app-builder",
+    "number": 17,
+    "name": "mobile-app-builder",
+    "title": "Mobile App Builder",
+    "description": "모바일 앱의 UI/UX 설계→네이티브 코드 생성→API 연동→스토어 배포 준비를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "api-integrator",
+      "app-developer",
+      "qa-engineer",
+      "store-manager",
+      "ux-designer"
+    ],
+    "skillNames": [
+      "app-store-optimization",
+      "mobile-app-builder",
+      "mobile-ux-patterns"
+    ]
+  },
+  {
+    "id": "18-api-designer",
+    "number": 18,
+    "name": "api-designer",
+    "title": "Api Designer",
+    "description": "REST/GraphQL API의 설계·문서화·목업·테스트를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "api-architect",
+      "doc-writer",
+      "mock-tester",
+      "review-auditor",
+      "schema-validator"
+    ],
+    "skillNames": [
+      "api-designer",
+      "api-error-design",
+      "rest-api-conventions"
+    ]
+  },
+  {
+    "id": "19-database-architect",
+    "number": 19,
+    "name": "database-architect",
+    "title": "Database Architect",
+    "description": "DB 설계의 모델링→마이그레이션→인덱싱→쿼리 최적화를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "data-modeler",
+      "integration-reviewer",
+      "migration-manager",
+      "performance-analyst",
+      "security-auditor"
+    ],
+    "skillNames": [
+      "database-architect",
+      "normalization-patterns",
+      "query-optimization-catalog"
+    ]
+  },
+  {
+    "id": "20-cicd-pipeline",
+    "number": 20,
+    "name": "cicd-pipeline",
+    "title": "Cicd Pipeline",
+    "description": "CI/CD 파이프라인의 설계·구축·모니터링·최적화를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "infra-engineer",
+      "monitoring-specialist",
+      "pipeline-designer",
+      "pipeline-reviewer",
+      "security-scanner"
+    ],
+    "skillNames": [
+      "cicd-pipeline",
+      "deployment-strategies",
+      "pipeline-security-gates"
+    ]
+  },
+  {
+    "id": "21-code-reviewer",
+    "number": 21,
+    "name": "code-reviewer",
+    "title": "Code Reviewer",
+    "description": "코드 리뷰 자동화의 스타일→보안→성능→아키텍처 리뷰를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "architecture-reviewer",
+      "performance-analyst",
+      "review-synthesizer",
+      "security-analyst",
+      "style-inspector"
+    ],
+    "skillNames": [
+      "code-reviewer",
+      "refactoring-catalog",
+      "vulnerability-patterns"
+    ]
+  },
+  {
+    "id": "22-legacy-modernizer",
+    "number": 22,
+    "name": "legacy-modernizer",
+    "title": "Legacy Modernizer",
+    "description": "레거시 코드베이스를 현대적 아키텍처로 전환하는 에이전트 팀 하네스. 분석→리팩토링전략→마이그레이션→검증 파이프라인을 자동화한다.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "legacy-analyzer",
+      "migration-engineer",
+      "modernization-reviewer",
+      "refactoring-strategist",
+      "regression-tester"
+    ],
+    "skillNames": [
+      "dependency-analysis",
+      "legacy-modernizer",
+      "strangler-fig-patterns"
+    ]
+  },
+  {
+    "id": "23-microservice-designer",
+    "number": 23,
+    "name": "microservice-designer",
+    "title": "Microservice Designer",
+    "description": "마이크로서비스 아키텍처를 설계·분해·통신·모니터링하는 에이전트 팀 하네스. 도메인 분석부터 관측성 설계까지 풀 파이프라인을 자동화한다.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "architecture-reviewer",
+      "communication-designer",
+      "domain-analyst",
+      "observability-engineer",
+      "service-architect"
+    ],
+    "skillNames": [
+      "ddd-context-mapping",
+      "distributed-patterns",
+      "microservice-designer"
+    ]
+  },
+  {
+    "id": "24-test-automation",
+    "number": 24,
+    "name": "test-automation",
+    "title": "Test Automation",
+    "description": "테스트 자동화 전략 수립부터 테스트 작성, CI 통합, 커버리지 분석까지 에이전트 팀이 협업하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "coverage-analyst",
+      "integration-tester",
+      "qa-reviewer",
+      "test-strategist",
+      "unit-tester"
+    ],
+    "skillNames": [
+      "mocking-strategy",
+      "test-automation",
+      "test-design-patterns"
+    ]
+  },
+  {
+    "id": "25-incident-postmortem",
+    "number": 25,
+    "name": "incident-postmortem",
+    "title": "Incident Postmortem",
+    "description": "장애 사후분석 보고서를 에이전트 팀이 협업하여 생성하는 하네스. 타임라인 재구성→근본원인 분석→영향범위 산정→재발방지 대책→보고서 생성 파이프라인을 자동화한다.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "impact-assessor",
+      "postmortem-reviewer",
+      "remediation-planner",
+      "root-cause-investigator",
+      "timeline-reconstructor"
+    ],
+    "skillNames": [
+      "incident-postmortem",
+      "rca-methodology",
+      "sla-impact-calculator"
+    ]
+  },
+  {
+    "id": "26-infra-as-code",
+    "number": 26,
+    "name": "infra-as-code",
+    "title": "Infra As Code",
+    "description": "Infrastructure as Code(IaC) 설계 및 구현을 에이전트 팀이 협업하여 수행하는 하네스. Terraform/Pulumi 기반 환경 구성, 보안, 비용 최적화 파이프라인을 자동화한다.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "cost-optimizer",
+      "drift-detector",
+      "iac-reviewer",
+      "infra-architect",
+      "security-engineer"
+    ],
+    "skillNames": [
+      "cloud-cost-models",
+      "infra-as-code",
+      "terraform-module-patterns"
+    ]
+  },
+  {
+    "id": "27-data-pipeline",
+    "number": 27,
+    "name": "data-pipeline",
+    "title": "Data Pipeline",
+    "description": "데이터 파이프라인의 수집→변환→적재→품질검증→모니터링을 에이전트 팀이 협업하여 설계·구현하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "data-quality-manager",
+      "etl-architect",
+      "monitoring-specialist",
+      "pipeline-reviewer",
+      "scheduler-engineer"
+    ],
+    "skillNames": [
+      "dag-orchestration-patterns",
+      "data-pipeline",
+      "data-quality-framework"
+    ]
+  },
+  {
+    "id": "28-security-audit",
+    "number": 28,
+    "name": "security-audit",
+    "title": "Security Audit",
+    "description": "보안 감사의 취약점스캔→코드분석→침투테스트보고→개선권고를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "audit-reviewer",
+      "code-analyst",
+      "pentest-reporter",
+      "security-consultant",
+      "vulnerability-scanner"
+    ],
+    "skillNames": [
+      "cve-analysis",
+      "owasp-testing-guide",
+      "security-audit",
+      "threat-modeling"
+    ]
+  },
+  {
+    "id": "29-performance-optimizer",
+    "number": 29,
+    "name": "performance-optimizer",
+    "title": "Performance Optimizer",
+    "description": "성능 최적화의 프로파일링→병목분석→최적화→벤치마크를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "benchmark-manager",
+      "bottleneck-analyst",
+      "optimization-engineer",
+      "perf-reviewer",
+      "profiler"
+    ],
+    "skillNames": [
+      "caching-strategy-selector",
+      "performance-optimizer",
+      "query-optimization-patterns"
+    ]
+  },
+  {
+    "id": "30-open-source-launcher",
+    "number": 30,
+    "name": "open-source-launcher",
+    "title": "Open Source Launcher",
+    "description": "오픈소스 프로젝트 런칭의 코드정리→문서→라이선스→커뮤니티 구축을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "software-dev",
+    "categoryLabel": "소프트웨어 개발",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "code-organizer",
+      "community-manager",
+      "doc-writer",
+      "launch-reviewer",
+      "license-specialist"
+    ],
+    "skillNames": [
+      "community-health-metrics",
+      "license-compatibility-matrix",
+      "open-source-launcher"
+    ]
+  },
+  {
+    "id": "31-ml-experiment",
+    "number": 31,
+    "name": "ml-experiment",
+    "title": "Ml Experiment",
+    "description": "ML 실험 관리의 데이터준비→모델설계→학습→평가→배포를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "data-engineer",
+      "evaluation-analyst",
+      "experiment-reviewer",
+      "model-designer",
+      "training-manager"
+    ],
+    "skillNames": [
+      "experiment-tracking-setup",
+      "feature-engineering-cookbook",
+      "ml-experiment",
+      "model-selection-guide"
+    ]
+  },
+  {
+    "id": "32-data-analysis",
+    "number": 32,
+    "name": "data-analysis",
+    "title": "Data Analysis",
+    "description": "데이터 분석 프로젝트의 탐색→정제→분석→시각화→보고서를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "analyst",
+      "cleaner",
+      "explorer",
+      "reporter",
+      "visualizer"
+    ],
+    "skillNames": [
+      "data-analysis",
+      "statistical-tests-selector",
+      "visualization-chooser"
+    ]
+  },
+  {
+    "id": "33-text-processor",
+    "number": 33,
+    "name": "text-processor",
+    "title": "Text Processor",
+    "description": "텍스트 처리 파이프라인: 대량 텍스트→요약·분류·개체추출·감성분석→구조화 데이터→보고서를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "classifier",
+      "extractor",
+      "preprocessor",
+      "report-writer",
+      "sentiment-analyzer"
+    ],
+    "skillNames": [
+      "nlp-preprocessing-toolkit",
+      "sentiment-lexicon-builder",
+      "text-processor"
+    ]
+  },
+  {
+    "id": "34-data-migration",
+    "number": 34,
+    "name": "data-migration",
+    "title": "Data Migration",
+    "description": "데이터 마이그레이션: 소스분석→스키마매핑→변환스크립트생성→검증쿼리→롤백계획을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "rollback-planner",
+      "schema-mapper",
+      "script-developer",
+      "source-analyst",
+      "validation-engineer"
+    ],
+    "skillNames": [
+      "data-migration",
+      "data-validation-patterns",
+      "type-mapping-encyclopedia"
+    ]
+  },
+  {
+    "id": "35-api-client-generator",
+    "number": 35,
+    "name": "api-client-generator",
+    "title": "Api Client Generator",
+    "description": "API 클라이언트 SDK 생성: 스펙파싱→타입생성→클라이언트코드→테스트→사용문서를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "doc-writer",
+      "sdk-developer",
+      "spec-parser",
+      "test-engineer",
+      "type-generator"
+    ],
+    "skillNames": [
+      "api-client-generator",
+      "openapi-spec-patterns",
+      "sdk-design-patterns"
+    ]
+  },
+  {
+    "id": "36-design-system",
+    "number": 36,
+    "name": "design-system",
+    "title": "Design System",
+    "description": "UI 디자인 시스템 구축: 디자인토큰→컴포넌트라이브러리→스토리북→접근성검증→문서를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "a11y-auditor",
+      "component-developer",
+      "doc-writer",
+      "storybook-builder",
+      "token-designer"
+    ],
+    "skillNames": [
+      "design-system",
+      "token-generator",
+      "wcag-checker"
+    ]
+  },
+  {
+    "id": "37-web-scraper",
+    "number": 37,
+    "name": "web-scraper",
+    "title": "Web Scraper",
+    "description": "웹 스크래핑 시스템의 대상분석→크롤러설계→파싱→저장→모니터링을 에이전트 팀이 협업하여 구축하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "crawler-developer",
+      "data-manager",
+      "monitor-operator",
+      "parser-engineer",
+      "target-analyst"
+    ],
+    "skillNames": [
+      "anti-bot-analyzer",
+      "selector-generator",
+      "web-scraper"
+    ]
+  },
+  {
+    "id": "38-chatbot-builder",
+    "number": 38,
+    "name": "chatbot-builder",
+    "title": "Chatbot Builder",
+    "description": "챗봇 구축의 의도분석→대화설계→NLU→통합→테스트를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "conversation-designer",
+      "dialog-tester",
+      "integration-engineer",
+      "nlu-developer",
+      "persona-architect"
+    ],
+    "skillNames": [
+      "chatbot-builder",
+      "conversation-flow-validator",
+      "intent-taxonomy-builder"
+    ]
+  },
+  {
+    "id": "39-changelog-generator",
+    "number": 39,
+    "name": "changelog-generator",
+    "title": "Changelog Generator",
+    "description": "릴리스 관리의 git이력분석→변경분류→릴리스노트생성→마이그레이션가이드→공지문작성을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "announcement-writer",
+      "change-classifier",
+      "commit-analyst",
+      "migration-guide-writer",
+      "release-note-writer"
+    ],
+    "skillNames": [
+      "changelog-generator",
+      "commit-parser",
+      "semver-analyzer"
+    ]
+  },
+  {
+    "id": "40-cli-tool-builder",
+    "number": 40,
+    "name": "cli-tool-builder",
+    "title": "Cli Tool Builder",
+    "description": "CLI 도구 개발의 명령설계→파서→핸들러→테스트→문서→배포설정을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "command-designer",
+      "core-developer",
+      "docs-writer",
+      "release-engineer",
+      "test-engineer"
+    ],
+    "skillNames": [
+      "arg-parser-generator",
+      "cli-tool-builder",
+      "ux-linter"
+    ]
+  },
+  {
+    "id": "41-llm-app-builder",
+    "number": 41,
+    "name": "llm-app-builder",
+    "title": "Llm App Builder",
+    "description": "LLM 앱 개발의 프롬프트엔지니어링→RAG파이프라인설계→평가프레임워크→최적화→배포설정을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "deploy-engineer",
+      "eval-specialist",
+      "optimization-engineer",
+      "prompt-engineer",
+      "rag-architect"
+    ],
+    "skillNames": [
+      "chunking-strategy-guide",
+      "llm-app-builder",
+      "prompt-optimizer"
+    ]
+  },
+  {
+    "id": "42-bi-dashboard",
+    "number": 42,
+    "name": "bi-dashboard",
+    "title": "Bi Dashboard",
+    "description": "BI 대시보드 구축의 데이터웨어하우스 설계→KPI 정의→시각화→자동 보고를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "data-ai",
+    "categoryLabel": "데이터 & AI",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "bi-reviewer",
+      "dashboard-builder",
+      "data-engineer",
+      "kpi-designer",
+      "report-automator"
+    ],
+    "skillNames": [
+      "bi-dashboard",
+      "chart-selector",
+      "kpi-tree-builder"
+    ]
+  },
+  {
+    "id": "43-startup-launcher",
+    "number": 43,
+    "name": "startup-launcher",
+    "title": "Startup Launcher",
+    "description": "스타트업 런칭의 아이디어 검증→비즈니스 모델→MVP→피칭→투자 유치를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "business-modeler",
+      "launch-reviewer",
+      "market-analyst",
+      "mvp-architect",
+      "pitch-creator"
+    ],
+    "skillNames": [
+      "pitch-deck-framework",
+      "startup-launcher",
+      "unit-economics-calculator"
+    ]
+  },
+  {
+    "id": "44-market-research",
+    "number": 44,
+    "name": "market-research",
+    "title": "Market Research",
+    "description": "시장 조사의 산업분석→경쟁분석→소비자조사→트렌드→보고서를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "competitor-analyst",
+      "consumer-analyst",
+      "industry-analyst",
+      "research-reviewer",
+      "trend-analyst"
+    ],
+    "skillNames": [
+      "market-research",
+      "porter-five-forces",
+      "tam-sam-som-calculator"
+    ]
+  },
+  {
+    "id": "45-gov-funding-plan",
+    "number": 45,
+    "name": "gov-funding-plan",
+    "title": "Gov Funding Plan",
+    "description": "정부지원사업 사업계획서의 공고요건분석→기술성·사업성작성→예산편성→증빙준비→제출검증을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "announcement-analyst",
+      "biz-writer",
+      "budget-planner",
+      "submission-reviewer",
+      "tech-writer"
+    ],
+    "skillNames": [
+      "budget-standard-checker",
+      "gov-funding-plan",
+      "scoring-optimizer"
+    ]
+  },
+  {
+    "id": "46-product-manager",
+    "number": 46,
+    "name": "product-manager",
+    "title": "Product Manager",
+    "description": "PM 업무의 로드맵→PRD→유저스토리→스프린트→회고를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "pm-reviewer",
+      "prd-writer",
+      "sprint-planner",
+      "story-writer",
+      "strategist"
+    ],
+    "skillNames": [
+      "product-manager",
+      "rice-prioritizer",
+      "story-point-estimator"
+    ]
+  },
+  {
+    "id": "47-strategy-framework",
+    "number": 47,
+    "name": "strategy-framework",
+    "title": "Strategy Framework",
+    "description": "조직의 전략 프레임워크를 OKR설계→BSC매핑→SWOT분석→비전·미션선언문→전략실행로드맵 순으로 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "bsc-analyst",
+      "okr-designer",
+      "strategy-reviewer",
+      "strategy-writer",
+      "swot-specialist"
+    ],
+    "skillNames": [
+      "okr-quality-checker",
+      "strategy-framework",
+      "tows-matrix-builder"
+    ]
+  },
+  {
+    "id": "48-sales-enablement",
+    "number": 48,
+    "name": "sales-enablement",
+    "title": "Sales Enablement",
+    "description": "영업 지원 파이프라인: 고객분석→제안서→프레젠테이션→팔로업을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "customer-analyst",
+      "followup-manager",
+      "presenter",
+      "proposal-writer",
+      "sales-reviewer"
+    ],
+    "skillNames": [
+      "objection-handler",
+      "roi-calculator",
+      "sales-enablement"
+    ]
+  },
+  {
+    "id": "49-customer-support",
+    "number": 49,
+    "name": "customer-support",
+    "title": "Customer Support",
+    "description": "고객지원 시스템 구축: FAQ→응대매뉴얼→에스컬레이션→분석을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "cs-analyst",
+      "cs-reviewer",
+      "escalation-manager",
+      "faq-builder",
+      "response-specialist"
+    ],
+    "skillNames": [
+      "csat-analyzer",
+      "customer-support",
+      "escalation-flowchart"
+    ]
+  },
+  {
+    "id": "50-pricing-strategy",
+    "number": 50,
+    "name": "pricing-strategy",
+    "title": "Pricing Strategy",
+    "description": "가격 전략 수립: 원가분석→경쟁가격→가치기반→시뮬레이션을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "competitive-analyst",
+      "cost-analyst",
+      "pricing-reviewer",
+      "pricing-simulator",
+      "value-assessor"
+    ],
+    "skillNames": [
+      "price-elasticity-calculator",
+      "pricing-strategy",
+      "psm-analyzer"
+    ]
+  },
+  {
+    "id": "51-investor-report",
+    "number": 51,
+    "name": "investor-report",
+    "title": "Investor Report",
+    "description": "투자자 보고서 생성: 재무실적분석→KPI대시보드→시장동향→전략업데이트→리스크공시를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "financial-analyst",
+      "ir-reviewer",
+      "kpi-designer",
+      "market-analyst",
+      "strategy-updater"
+    ],
+    "skillNames": [
+      "financial-ratio-analyzer",
+      "investor-report",
+      "ir-narrative-builder",
+      "kpi-benchmark-engine"
+    ]
+  },
+  {
+    "id": "52-scenario-planner",
+    "number": 52,
+    "name": "scenario-planner",
+    "title": "Scenario Planner",
+    "description": "불확실한 환경에서 핵심 변수를 정의하고, 시나리오 매트릭스를 구성하여 영향 분석과 대응 전략을 수립하는 에이전트 팀 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "impact-assessor",
+      "integration-reviewer",
+      "scenario-designer",
+      "strategy-architect",
+      "variable-analyst"
+    ],
+    "skillNames": [
+      "decision-trigger-mapper",
+      "scenario-narrative-engine",
+      "scenario-planner",
+      "steep-framework"
+    ]
+  },
+  {
+    "id": "53-financial-modeler",
+    "number": 53,
+    "name": "financial-modeler",
+    "title": "Financial Modeler",
+    "description": "수익 모델, 비용 구조, 시나리오 분석, 밸류에이션까지 재무 모델링 전 과정을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "cost-analyst",
+      "model-reviewer",
+      "revenue-modeler",
+      "scenario-planner",
+      "valuation-expert"
+    ],
+    "skillNames": [
+      "dcf-valuation",
+      "financial-modeler",
+      "sensitivity-analysis",
+      "unit-economics"
+    ]
+  },
+  {
+    "id": "54-grant-writer",
+    "number": 54,
+    "name": "grant-writer",
+    "title": "Grant Writer",
+    "description": "보조금 및 지원사업 신청을 위한 공고 분석, 사업계획 작성, 예산 편성, 제출 검증까지 에이전트 팀이 협업하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "announcement-analyst",
+      "budget-designer",
+      "compliance-checker",
+      "plan-writer",
+      "submission-verifier"
+    ],
+    "skillNames": [
+      "budget-rule-engine",
+      "grant-writer",
+      "scoring-optimizer"
+    ]
+  },
+  {
+    "id": "55-rfp-responder",
+    "number": 55,
+    "name": "rfp-responder",
+    "title": "Rfp Responder",
+    "description": "RFI/RFP 응답서 작성을 위한 요구사항 분석, 역량 매칭, 기술 제안, 가격 제안, 차별화 전략까지 에이전트 팀이 협업하는 하네스.",
+    "category": "business-strategy",
+    "categoryLabel": "비즈니스 전략",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "capability-matcher",
+      "pricing-strategist",
+      "proposal-reviewer",
+      "requirement-analyst",
+      "technical-proposer"
+    ],
+    "skillNames": [
+      "pricing-calculator",
+      "rfp-responder",
+      "win-theme-builder"
+    ]
+  },
+  {
+    "id": "56-language-tutor",
+    "number": 56,
+    "name": "language-tutor",
+    "title": "Language Tutor",
+    "description": "외국어 학습을 위한 레벨 테스트, 커리큘럼, 레슨, 퀴즈, 복습 관리 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "curriculum-designer",
+      "lesson-tutor",
+      "level-assessor",
+      "quiz-master",
+      "review-coach"
+    ],
+    "skillNames": [
+      "cefr-assessment",
+      "language-tutor",
+      "spaced-repetition"
+    ]
+  },
+  {
+    "id": "57-exam-prep",
+    "number": 57,
+    "name": "exam-prep",
+    "title": "Exam Prep",
+    "description": "시험 준비의 출제경향→약점진단→맞춤학습→모의고사→오답분석 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "diagnostician",
+      "error-analyst",
+      "examiner",
+      "learning-designer",
+      "trend-analyst"
+    ],
+    "skillNames": [
+      "bloom-taxonomy-engine",
+      "error-pattern-analyzer",
+      "exam-prep"
+    ]
+  },
+  {
+    "id": "58-thesis-advisor",
+    "number": 58,
+    "name": "thesis-advisor",
+    "title": "Thesis Advisor",
+    "description": "논문 작성의 주제선정→문헌조사→방법론→집필→교정 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "literature-analyst",
+      "methodology-expert",
+      "proofreader",
+      "topic-explorer",
+      "writing-coach"
+    ],
+    "skillNames": [
+      "academic-writing-style",
+      "research-methodology",
+      "thesis-advisor"
+    ]
+  },
+  {
+    "id": "59-coding-bootcamp",
+    "number": 59,
+    "name": "coding-bootcamp",
+    "title": "Coding Bootcamp",
+    "description": "코딩 교육의 커리큘럼설계→실습과제→코드리뷰→프로젝트→포트폴리오를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "code-reviewer",
+      "curriculum-designer",
+      "exercise-creator",
+      "mentor"
+    ],
+    "skillNames": [
+      "code-kata-generator",
+      "coding-bootcamp",
+      "tech-interview-prep"
+    ]
+  },
+  {
+    "id": "60-debate-simulator",
+    "number": 60,
+    "name": "debate-simulator",
+    "title": "Debate Simulator",
+    "description": "토론 시뮬레이션 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "con-debater",
+      "judge",
+      "pro-debater",
+      "rapporteur",
+      "topic-analyst"
+    ],
+    "skillNames": [
+      "argumentation-framework",
+      "debate-simulator",
+      "logical-fallacy-detector"
+    ]
+  },
+  {
+    "id": "61-competency-modeler",
+    "number": 61,
+    "name": "competency-modeler",
+    "title": "Competency Modeler",
+    "description": "역량 모델링의 직무분석→역량사전작성→평가루브릭설계→개발계획수립→역량매트릭스를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "competency-architect",
+      "development-planner",
+      "job-analyst",
+      "rubric-designer"
+    ],
+    "skillNames": [
+      "bars-assessment",
+      "competency-modeler",
+      "ksa-taxonomy"
+    ]
+  },
+  {
+    "id": "62-adr-writer",
+    "number": 62,
+    "name": "adr-writer",
+    "title": "Adr Writer",
+    "description": "아키텍처 결정 기록(ADR) 작성 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "adr-author",
+      "alternative-researcher",
+      "context-analyst",
+      "impact-tracker",
+      "tradeoff-evaluator"
+    ],
+    "skillNames": [
+      "adr-writer",
+      "madr-template-engine",
+      "quality-attribute-analyzer"
+    ]
+  },
+  {
+    "id": "63-research-assistant",
+    "number": 63,
+    "name": "research-assistant",
+    "title": "Research Assistant",
+    "description": "학술 연구 보조 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "critic-synthesizer",
+      "literature-searcher",
+      "note-taker",
+      "reference-manager",
+      "research-coordinator"
+    ],
+    "skillNames": [
+      "citation-formatter",
+      "research-assistant",
+      "systematic-review-protocol"
+    ]
+  },
+  {
+    "id": "64-knowledge-base-builder",
+    "number": 64,
+    "name": "knowledge-base-builder",
+    "title": "Knowledge Base Builder",
+    "description": "조직 지식관리 체계 구축 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "knowledge-collector",
+      "maintenance-planner",
+      "search-optimizer",
+      "taxonomy-designer",
+      "wiki-builder"
+    ],
+    "skillNames": [
+      "content-lifecycle-manager",
+      "information-architecture",
+      "knowledge-base-builder"
+    ]
+  },
+  {
+    "id": "65-personal-branding",
+    "number": 65,
+    "name": "personal-branding",
+    "title": "Personal Branding",
+    "description": "개인 브랜딩 에이전트 팀 하네스.",
+    "category": "education",
+    "categoryLabel": "교육 & 학습",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "cover-letter-writer",
+      "portfolio-designer",
+      "positioning-strategist",
+      "profile-optimizer",
+      "resume-writer"
+    ],
+    "skillNames": [
+      "ats-optimizer",
+      "linkedin-seo",
+      "personal-branding"
+    ]
+  },
+  {
+    "id": "66-contract-analyzer",
+    "number": 66,
+    "name": "contract-analyzer",
+    "title": "Contract Analyzer",
+    "description": "계약서 분석·작성·검토·위험 평가를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "clause-analyst",
+      "clause-drafter",
+      "comparison-reviewer",
+      "contract-coordinator",
+      "risk-assessor"
+    ],
+    "skillNames": [
+      "clause-risk-database",
+      "contract-analyzer",
+      "negotiation-playbook"
+    ]
+  },
+  {
+    "id": "67-compliance-checker",
+    "number": 67,
+    "name": "compliance-checker",
+    "title": "Compliance Checker",
+    "description": "규정 준수 검증 — 법률매핑→현황진단→갭분석→개선계획을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "gap-analyst",
+      "law-mapper",
+      "remediation-planner",
+      "status-auditor"
+    ],
+    "skillNames": [
+      "audit-checklist-engine",
+      "compliance-checker",
+      "regulation-knowledge-base"
+    ]
+  },
+  {
+    "id": "68-patent-drafter",
+    "number": 68,
+    "name": "patent-drafter",
+    "title": "Patent Drafter",
+    "description": "특허 명세서 작성 — 선행기술조사→청구항→명세서→도면설명을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "claim-drafter",
+      "drawing-designer",
+      "patent-reviewer",
+      "prior-art-researcher",
+      "specification-writer"
+    ],
+    "skillNames": [
+      "claim-drafting-patterns",
+      "patent-drafter",
+      "prior-art-search-strategy"
+    ]
+  },
+  {
+    "id": "69-privacy-engineer",
+    "number": 69,
+    "name": "privacy-engineer",
+    "title": "Privacy Engineer",
+    "description": "개인정보보호 엔지니어링 — GDPR/PIPA 분석→PIA→동의서→프로세스설계를 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "consent-designer",
+      "pia-assessor",
+      "privacy-law-analyst",
+      "process-architect"
+    ],
+    "skillNames": [
+      "data-flow-mapper",
+      "gdpr-pipa-cross-reference",
+      "privacy-engineer"
+    ]
+  },
+  {
+    "id": "70-legal-research",
+    "number": 70,
+    "name": "legal-research",
+    "title": "Legal Research",
+    "description": "법률 리서치 — 판례검색→법리분석→의견서→전략수립을 에이전트 팀이 협업하여 수행하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "case-searcher",
+      "legal-analyst",
+      "opinion-writer",
+      "strategy-advisor"
+    ],
+    "skillNames": [
+      "case-analysis-framework",
+      "legal-research",
+      "legal-writing-methodology"
+    ]
+  },
+  {
+    "id": "71-service-legal-docs",
+    "number": 71,
+    "name": "service-legal-docs",
+    "title": "Service Legal Docs",
+    "description": "서비스 법무문서 세트 — 이용약관→개인정보처리방침→쿠키정책→환불정책→저작권고지 일체를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "consistency-reviewer",
+      "consumer-analyst",
+      "privacy-specialist",
+      "tos-specialist"
+    ],
+    "skillNames": [
+      "cross-document-linker",
+      "service-legal-docs",
+      "unfair-terms-detector"
+    ]
+  },
+  {
+    "id": "72-regulatory-filing",
+    "number": 72,
+    "name": "regulatory-filing",
+    "title": "Regulatory Filing",
+    "description": "인허가·신고서류의 요건조사→구비서류목록→신청서작성→첨부자료준비→제출체크리스트를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "legal-compliance",
+    "categoryLabel": "법률 & 규정",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "attachment-preparer",
+      "document-drafter",
+      "requirements-investigator",
+      "submission-verifier"
+    ],
+    "skillNames": [
+      "form-filling-guide",
+      "permit-requirements-db",
+      "regulatory-filing"
+    ]
+  },
+  {
+    "id": "73-meal-planner",
+    "number": 73,
+    "name": "meal-planner",
+    "title": "Meal Planner",
+    "description": "식단 관리의 영양분석→식단설계→레시피→장보기목록→조리가이드를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "meal-designer",
+      "nutritionist",
+      "recipe-writer",
+      "shopping-coordinator"
+    ],
+    "skillNames": [
+      "ingredient-substitution-engine",
+      "meal-planner",
+      "nutrition-calculator"
+    ]
+  },
+  {
+    "id": "74-fitness-program",
+    "number": 74,
+    "name": "fitness-program",
+    "title": "Fitness Program",
+    "description": "운동 프로그램의 목표별설계→주간스케줄→운동가이드→식단연계→진행기록을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "exercise-guide",
+      "nutrition-linker",
+      "program-architect",
+      "template-builder"
+    ],
+    "skillNames": [
+      "exercise-biomechanics",
+      "fitness-program",
+      "periodization-engine"
+    ]
+  },
+  {
+    "id": "75-tax-calculator",
+    "number": 75,
+    "name": "tax-calculator",
+    "title": "Tax Calculator",
+    "description": "세금 계산·절세 전략의 소득분석→공제항목최적화→세액계산→절세시뮬레이션→신고자료준비를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "deduction-optimizer",
+      "income-analyst",
+      "strategy-advisor",
+      "tax-engine"
+    ],
+    "skillNames": [
+      "deduction-optimizer-engine",
+      "tax-bracket-simulator",
+      "tax-calculator"
+    ]
+  },
+  {
+    "id": "76-travel-planner",
+    "number": 76,
+    "name": "travel-planner",
+    "title": "Travel Planner",
+    "description": "여행 계획의 목적지분석→일정→숙소→예산→현지정보를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 4,
+    "skillCount": 3,
+    "agentNames": [
+      "budget-manager",
+      "destination-analyst",
+      "itinerary-designer",
+      "local-guide"
+    ],
+    "skillNames": [
+      "budget-calculator",
+      "route-optimizer",
+      "travel-planner"
+    ]
+  },
+  {
+    "id": "77-space-concept-board",
+    "number": 77,
+    "name": "space-concept-board",
+    "title": "Space Concept Board",
+    "description": "공간 인테리어 컨셉보드의 스타일분석→무드보드→컬러팔레트→가구·소품리스트→예산표→쇼핑가이드를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "budget-manager",
+      "concept-reviewer",
+      "item-curator",
+      "moodboard-designer",
+      "style-analyst"
+    ],
+    "skillNames": [
+      "color-harmony-engine",
+      "space-concept-board",
+      "spatial-layout-guide"
+    ]
+  },
+  {
+    "id": "78-personal-finance",
+    "number": 78,
+    "name": "personal-finance",
+    "title": "Personal Finance",
+    "description": "개인 재무관리의 수입지출분석→예산설계→투자전략→절세방안→은퇴설계를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "budget-planner",
+      "finance-reviewer",
+      "financial-analyst",
+      "investment-advisor",
+      "tax-strategist"
+    ],
+    "skillNames": [
+      "compound-interest-simulator",
+      "financial-ratio-analyzer",
+      "personal-finance"
+    ]
+  },
+  {
+    "id": "79-side-project-launcher",
+    "number": 79,
+    "name": "side-project-launcher",
+    "title": "Side Project Launcher",
+    "description": "사이드프로젝트 기획의 아이디어검증→기술스택선정→MVP스펙→개발로드맵→런칭체크리스트를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "idea-validator",
+      "launch-reviewer",
+      "mvp-designer",
+      "roadmap-builder",
+      "techstack-analyst"
+    ],
+    "skillNames": [
+      "market-sizing-calculator",
+      "side-project-launcher",
+      "techstack-decision-matrix"
+    ]
+  },
+  {
+    "id": "80-wedding-planner",
+    "number": 80,
+    "name": "wedding-planner",
+    "title": "Wedding Planner",
+    "description": "결혼 준비 종합의 타임라인설계→예산관리표→업체비교표→체크리스트→청첩장문구를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "lifestyle",
+    "categoryLabel": "라이프스타일",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "budget-controller",
+      "checklist-builder",
+      "timeline-designer",
+      "vendor-analyst",
+      "wedding-reviewer"
+    ],
+    "skillNames": [
+      "vendor-negotiation-guide",
+      "wedding-budget-optimizer",
+      "wedding-planner"
+    ]
+  },
+  {
+    "id": "81-technical-writer",
+    "number": 81,
+    "name": "technical-writer",
+    "title": "Technical Writer",
+    "description": "기술 문서 작성의 구조설계→집필→다이어그램→리뷰→버전관리를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 4,
+    "agentNames": [
+      "diagram-maker",
+      "doc-writer",
+      "info-architect",
+      "tech-reviewer",
+      "version-controller"
+    ],
+    "skillNames": [
+      "api-doc-standards",
+      "code-example-patterns",
+      "diagram-patterns",
+      "technical-writer"
+    ]
+  },
+  {
+    "id": "82-report-generator",
+    "number": 82,
+    "name": "report-generator",
+    "title": "Report Generator",
+    "description": "업무 보고서의 데이터수집→분석→시각화→집필→요약을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "analyst",
+      "data-collector",
+      "executive-summarizer",
+      "report-writer",
+      "visualizer"
+    ],
+    "skillNames": [
+      "data-visualization-guide",
+      "kpi-dashboard-patterns",
+      "report-generator"
+    ]
+  },
+  {
+    "id": "83-sop-writer",
+    "number": 83,
+    "name": "sop-writer",
+    "title": "Sop Writer",
+    "description": "표준운영절차(SOP)의 프로세스분석→절차서→체크리스트→교육자료→버전관리를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "checklist-designer",
+      "procedure-writer",
+      "process-analyst",
+      "training-developer",
+      "version-controller"
+    ],
+    "skillNames": [
+      "checklist-design",
+      "process-mapping",
+      "sop-writer"
+    ]
+  },
+  {
+    "id": "84-meeting-strategist",
+    "number": 84,
+    "name": "meeting-strategist",
+    "title": "Meeting Strategist",
+    "description": "회의 전략 문서의 안건구조설계→배경자료조사→의사결정프레임워크→회의록템플릿→팔로업플랜을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "agenda-architect",
+      "background-researcher",
+      "followup-planner",
+      "framework-designer",
+      "template-builder"
+    ],
+    "skillNames": [
+      "decision-frameworks",
+      "facilitation-techniques",
+      "meeting-strategist"
+    ]
+  },
+  {
+    "id": "85-public-speaking",
+    "number": 85,
+    "name": "public-speaking",
+    "title": "Public Speaking",
+    "description": "퍼블릭스피킹 종합의 연설문→발표대본→토론준비서→Q&A예상답변→리허설가이드를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "audience-analyst",
+      "debate-preparer",
+      "qa-strategist",
+      "rehearsal-coach",
+      "speech-writer"
+    ],
+    "skillNames": [
+      "audience-engagement",
+      "public-speaking",
+      "rhetoric-patterns"
+    ]
+  },
+  {
+    "id": "86-proposal-writer",
+    "number": 86,
+    "name": "proposal-writer",
+    "title": "Proposal Writer",
+    "description": "제안서의 고객분석→솔루션설계→가격→차별화→디자인을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "client-analyst",
+      "differentiator",
+      "pricing-strategist",
+      "proposal-designer",
+      "solution-architect"
+    ],
+    "skillNames": [
+      "proposal-writer",
+      "roi-calculator",
+      "win-theme-builder"
+    ]
+  },
+  {
+    "id": "87-crisis-communication",
+    "number": 87,
+    "name": "crisis-communication",
+    "title": "Crisis Communication",
+    "description": "위기 상황 발생 시 상황파악→메시지전략→보도자료→Q&A→모니터링까지 에이전트 팀이 협업하여 통합 위기소통 패키지를 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "media-monitor",
+      "message-strategist",
+      "press-release-writer",
+      "qa-preparer",
+      "situation-analyst"
+    ],
+    "skillNames": [
+      "crisis-communication",
+      "media-response-templates",
+      "stakeholder-mapping"
+    ]
+  },
+  {
+    "id": "88-risk-register",
+    "number": 88,
+    "name": "risk-register",
+    "title": "Risk Register",
+    "description": "프로젝트 리스크 관리대장: 리스크식별→확률·영향평가→대응전략수립→모니터링계획→상태보고서까지 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "communication",
+    "categoryLabel": "커뮤니케이션",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "assessment-analyst",
+      "monitoring-planner",
+      "report-writer",
+      "response-strategist",
+      "risk-identifier"
+    ],
+    "skillNames": [
+      "risk-register",
+      "risk-response-patterns",
+      "risk-scoring-matrix"
+    ]
+  },
+  {
+    "id": "89-event-organizer",
+    "number": 89,
+    "name": "event-organizer",
+    "title": "Event Organizer",
+    "description": "이벤트 기획·운영: 컨셉→장소→프로그램→홍보→실행→사후평가까지 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "concept-planner",
+      "evaluation-analyst",
+      "logistics-manager",
+      "program-designer",
+      "promotion-lead"
+    ],
+    "skillNames": [
+      "budget-planning",
+      "event-organizer",
+      "venue-evaluation"
+    ]
+  },
+  {
+    "id": "90-hiring-pipeline",
+    "number": 90,
+    "name": "hiring-pipeline",
+    "title": "Hiring Pipeline",
+    "description": "채용 프로세스: JD작성→소싱→스크리닝→면접→평가→오퍼까지 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "interview-designer",
+      "jd-writer",
+      "offer-coordinator",
+      "screening-expert",
+      "sourcing-specialist"
+    ],
+    "skillNames": [
+      "competency-model",
+      "hiring-pipeline",
+      "interview-scorecard"
+    ]
+  },
+  {
+    "id": "91-onboarding-system",
+    "number": 91,
+    "name": "onboarding-system",
+    "title": "Onboarding System",
+    "description": "신규입사자 온보딩: 체크리스트→교육→멘토배정→30-60-90일 계획까지 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "experience-reviewer",
+      "mentor-matcher",
+      "milestone-tracker",
+      "onboarding-architect",
+      "training-builder"
+    ],
+    "skillNames": [
+      "buddy-program-guide",
+      "learning-path-design",
+      "onboarding-system"
+    ]
+  },
+  {
+    "id": "92-operations-manual",
+    "number": 92,
+    "name": "operations-manual",
+    "title": "Operations Manual",
+    "description": "업무 매뉴얼 자동 생성 하네스. 기존 문서/코드를 분석하여 프로세스 플로차트, 단계별 매뉴얼, FAQ, 교육자료를 에이전트 팀이 협업하여 생성한다.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "document-analyst",
+      "faq-builder",
+      "flowchart-designer",
+      "manual-writer",
+      "training-producer"
+    ],
+    "skillNames": [
+      "flowchart-standards",
+      "knowledge-base-design",
+      "operations-manual"
+    ]
+  },
+  {
+    "id": "93-feedback-analyzer",
+    "number": 93,
+    "name": "feedback-analyzer",
+    "title": "Feedback Analyzer",
+    "description": "고객·직원 피드백 분석 하네스. 데이터 수집부터 감성분석, 주제분류, 트렌드 도출, 인사이트 보고서까지 에이전트 팀이 협업하여 생성한다.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "data-collector",
+      "insight-writer",
+      "sentiment-analyst",
+      "topic-classifier",
+      "trend-detector"
+    ],
+    "skillNames": [
+      "feedback-analyzer",
+      "sentiment-scoring",
+      "text-analytics-methods"
+    ]
+  },
+  {
+    "id": "94-audit-report",
+    "number": 94,
+    "name": "audit-report",
+    "title": "Audit Report",
+    "description": "내부감사 보고서 생성 하네스. 감사 범위 설정부터 체크리스트 작성, 발견사항 정리, 개선 권고, 추적 대장까지 에이전트 팀이 협업하여 생성한다.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "checklist-builder",
+      "findings-analyst",
+      "recommendation-writer",
+      "scope-designer",
+      "tracking-manager"
+    ],
+    "skillNames": [
+      "audit-report",
+      "finding-classification",
+      "internal-control-framework"
+    ]
+  },
+  {
+    "id": "95-procurement-docs",
+    "number": 95,
+    "name": "procurement-docs",
+    "title": "Procurement Docs",
+    "description": "구매 문서세트 생성 하네스. 요구사항 정의부터 벤더 비교표, 평가 기준표, 계약 조건 검토, 검수 기준서까지 에이전트 팀이 협업하여 생성한다.",
+    "category": "operations",
+    "categoryLabel": "운영 & 프로세스",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "acceptance-builder",
+      "contract-reviewer",
+      "evaluation-designer",
+      "requirements-definer",
+      "vendor-comparator"
+    ],
+    "skillNames": [
+      "contract-checklist",
+      "procurement-docs",
+      "vendor-scoring"
+    ]
+  },
+  {
+    "id": "96-real-estate-analyst",
+    "number": 96,
+    "name": "real-estate-analyst",
+    "title": "Real Estate Analyst",
+    "description": "부동산 분석 하네스. 시장조사, 입지분석, 수익성 분석, 리스크 평가, 투자 보고서까지 에이전트 팀이 협업하여 생성한다.",
+    "category": "specialized",
+    "categoryLabel": "전문 도메인",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "location-analyst",
+      "market-researcher",
+      "profitability-analyst",
+      "report-writer",
+      "risk-assessor"
+    ],
+    "skillNames": [
+      "cap-rate-calculator",
+      "location-scoring",
+      "real-estate-analyst"
+    ]
+  },
+  {
+    "id": "97-ecommerce-launcher",
+    "number": 97,
+    "name": "ecommerce-launcher",
+    "title": "Ecommerce Launcher",
+    "description": "이커머스 상품 런칭의 기획→상세페이지→가격전략→마케팅→CS 셋업을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "specialized",
+    "categoryLabel": "전문 도메인",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "cs-architect",
+      "detail-page-writer",
+      "marketing-manager",
+      "pricing-strategist",
+      "product-planner"
+    ],
+    "skillNames": [
+      "conversion-optimization",
+      "ecommerce-launcher",
+      "product-copy-formulas"
+    ]
+  },
+  {
+    "id": "98-academic-paper",
+    "number": 98,
+    "name": "academic-paper",
+    "title": "Academic Paper",
+    "description": "학술 논문 작성의 연구설계→실험→분석→집필→투고준비를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "specialized",
+    "categoryLabel": "전문 도메인",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "experiment-manager",
+      "paper-writer",
+      "research-designer",
+      "statistical-analyst",
+      "submission-preparer"
+    ],
+    "skillNames": [
+      "academic-paper",
+      "citation-standards",
+      "research-methodology"
+    ]
+  },
+  {
+    "id": "99-sustainability-audit",
+    "number": 99,
+    "name": "sustainability-audit",
+    "title": "Sustainability Audit",
+    "description": "ESG/지속가능성 감사의 환경→사회→거버넌스→보고서→개선계획을 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "specialized",
+    "categoryLabel": "전문 도메인",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "environmental-analyst",
+      "esg-reporter",
+      "governance-reviewer",
+      "improvement-planner",
+      "social-assessor"
+    ],
+    "skillNames": [
+      "ghg-protocol",
+      "materiality-assessment",
+      "sustainability-audit"
+    ]
+  },
+  {
+    "id": "100-ip-portfolio",
+    "number": 100,
+    "name": "ip-portfolio",
+    "title": "Ip Portfolio",
+    "description": "지식재산 포트폴리오 관리의 IP현황분석→특허·상표·저작권매핑→갱신일정→라이선스전략→보호전략보고서를 에이전트 팀이 협업하여 생성하는 하네스.",
+    "category": "specialized",
+    "categoryLabel": "전문 도메인",
+    "agentCount": 5,
+    "skillCount": 3,
+    "agentNames": [
+      "ip-analyst",
+      "license-strategist",
+      "patent-mapper",
+      "protection-advisor",
+      "renewal-scheduler"
+    ],
+    "skillNames": [
+      "ip-landscape-analysis",
+      "ip-portfolio",
+      "patent-valuation"
+    ]
+  }
+]

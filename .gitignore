@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# harness-100 temp clone
+/temp
+
+# claude local settings
+.claude/settings.local.json
+
 # dependencies
 /node_modules
 /.pnp
