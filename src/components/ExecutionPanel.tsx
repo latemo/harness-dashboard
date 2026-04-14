@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getPromptExample } from "@/lib/prompt-examples";
+import { loadServerState, saveServerState } from "@/lib/server-state";
 
 interface Props {
   projectPath: string;
@@ -36,7 +37,7 @@ interface Props {
 type Status = "idle" | "running" | "complete" | "error";
 
 interface LogEntry {
-  type: "status" | "init" | "tool_use" | "tool_result" | "assistant_text" | "result" | "stdout" | "stderr" | "error" | "timeout" | "complete";
+  type: "status" | "init" | "tool_use" | "tool_result" | "assistant_text" | "result" | "stdout" | "stderr" | "error" | "timeout" | "complete" | "separator";
   data: string;
   tool?: string;
   detail?: string;
@@ -57,23 +58,25 @@ interface PromptHistoryEntry {
 export default function ExecutionPanel({ projectPath, agentCount, harnessNumber, onOpenClaude }: Props) {
   const storageKey = `harness-prompt-${harnessNumber}`;
   const historyKey = `harness-history-${harnessNumber}`;
-  const [prompt, setPrompt] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return localStorage.getItem(storageKey) || "";
-  });
+  const [prompt, setPrompt] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [reconnected, setReconnected] = useState(false);
   const [hasSession, setHasSession] = useState(false); // 이전 세션 존재 여부
-  const [promptHistory, setPromptHistory] = useState<PromptHistoryEntry[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      return JSON.parse(localStorage.getItem(historyKey) || "[]");
-    } catch { return []; }
-  });
+  const [promptHistory, setPromptHistory] = useState<PromptHistoryEntry[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+
+  // 서버에서 프롬프트 및 히스토리 로드
+  useEffect(() => {
+    loadServerState<string>(storageKey, "").then((saved) => {
+      if (saved) setPrompt(saved);
+    });
+    loadServerState<PromptHistoryEntry[]>(historyKey, []).then((saved) => {
+      if (saved.length > 0) setPromptHistory(saved);
+    });
+  }, [storageKey, historyKey]);
   const [preview, setPreview] = useState<{
     detected: boolean;
     type?: string;
@@ -85,15 +88,16 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
   const logRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const historyAddedRef = useRef(false);
 
-  // 프롬프트 변경 시 localStorage 저장
+  // 프롬프트 변경 시 서버에 저장
   useEffect(() => {
-    localStorage.setItem(storageKey, prompt);
+    if (prompt) saveServerState(storageKey, prompt);
   }, [prompt, storageKey]);
 
-  // 히스토리 변경 시 localStorage 저장
+  // 히스토리 변경 시 서버에 저장
   useEffect(() => {
-    localStorage.setItem(historyKey, JSON.stringify(promptHistory));
+    if (promptHistory.length > 0) saveServerState(historyKey, promptHistory);
   }, [promptHistory, historyKey]);
 
   // 미리보기 감지 함수
@@ -328,18 +332,21 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
       // ignore
     }
 
-    // 히스토리에 추가
+    // 히스토리 항목 준비
     const historyEntry: PromptHistoryEntry = {
       prompt: prompt.trim(),
       timestamp: Date.now(),
       continued: isContinue,
     };
+    historyAddedRef.current = false;
 
     setStatus("running");
-    setLogs([]);
     setExpandedIdx(null);
     setReconnected(false);
     abortRef.current = new AbortController();
+
+    // 첫 번째 로그 도착 시 구분선 삽입 여부 플래그
+    let firstLog = true;
 
     try {
       const res = await fetch("/api/execute-claude", {
@@ -371,25 +378,47 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
           if (!line.trim()) continue;
           try {
             const entry = JSON.parse(line) as LogEntry;
-            setLogs((prev) => [...prev, entry]);
+            if (firstLog) {
+              firstLog = false;
+              // 이전 로그가 있으면 구분선 삽입 후 새 로그, 없으면 바로 추가
+              setLogs((prev) =>
+                prev.length > 0
+                  ? [...prev, { type: "separator", data: new Date().toLocaleTimeString("ko-KR") }, entry]
+                  : [entry]
+              );
+            } else {
+              setLogs((prev) => [...prev, entry]);
+            }
 
             if (entry.type === "result") {
               setStatus(entry.success ? "complete" : "error");
               setHasSession(true);
-              // 히스토리에 비용/시간 업데이트
-              historyEntry.costUsd = entry.costUsd;
-              historyEntry.durationSec = entry.durationSec;
-              setPromptHistory((prev) => [...prev, historyEntry].slice(-20));
-              if (entry.success) setTimeout(detectPreview, 500);
+              if (entry.success) {
+                setPrompt(""); // 성공 시 입력창 클리어
+                setTimeout(detectPreview, 500);
+              }
+              // 중복 방지: 한 번만 히스토리에 추가
+              if (!historyAddedRef.current) {
+                historyAddedRef.current = true;
+                historyEntry.costUsd = entry.costUsd;
+                historyEntry.durationSec = entry.durationSec;
+                setPromptHistory((prev) => {
+                  const deduped = prev.filter((h) => h.timestamp !== historyEntry.timestamp);
+                  return [...deduped, historyEntry].slice(-20);
+                });
+              }
             } else if (entry.type === "complete") {
               setStatus((prev) => (prev === "running" ? "complete" : prev));
               setHasSession(true);
+              setPrompt(""); // complete 시에도 입력창 클리어
               setTimeout(detectPreview, 500);
             } else if (entry.type === "error") {
               setStatus("error");
+              // 에러 시에는 프롬프트 유지 (재시도 편의)
             } else if (entry.type === "timeout") {
               setStatus("complete");
               setHasSession(true);
+              setPrompt("");
               setTimeout(detectPreview, 500);
             }
           } catch {
@@ -401,6 +430,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
       setStatus((prev) => {
         if (prev === "running") {
           setHasSession(true);
+          setPrompt("");
           setTimeout(detectPreview, 500);
           return "complete";
         }
@@ -782,6 +812,15 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
 
 function LogLine({ entry, expanded, onToggle }: { entry: LogEntry; expanded: boolean; onToggle: () => void }) {
   switch (entry.type) {
+    case "separator":
+      return (
+        <div className="flex items-center gap-2 py-2 my-1">
+          <div className="flex-1 border-t border-white/10" />
+          <span className="text-[10px] text-gray-600 shrink-0">{entry.data}</span>
+          <div className="flex-1 border-t border-white/10" />
+        </div>
+      );
+
     case "status":
     case "init":
       return <div className="text-blue-400 py-0.5">{entry.data}</div>;

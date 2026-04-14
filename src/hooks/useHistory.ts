@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { loadServerState, saveServerState } from "@/lib/server-state";
 
-const STORAGE_KEY = "harness-history";
+const STATE_KEY = "harness-history";
 
 export interface HistoryEntry {
   harnessId: string;
@@ -13,25 +14,26 @@ export interface HistoryEntry {
 
 export function useHistory() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      setHistory(JSON.parse(stored));
-    }
+    loadServerState<HistoryEntry[]>(STATE_KEY, []).then((entries) => {
+      setHistory(entries);
+      setLoaded(true);
+    });
   }, []);
 
   const addEntry = useCallback((entry: Omit<HistoryEntry, "appliedAt">) => {
     setHistory((prev) => {
-      const next = [{ ...entry, appliedAt: new Date().toISOString() }, ...prev].slice(0, 50);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      const next = [{ ...entry, appliedAt: new Date().toISOString() }, ...prev.filter((h) => h.harnessId !== entry.harnessId)].slice(0, 50);
+      saveServerState(STATE_KEY, next);
       return next;
     });
   }, []);
 
   const clearHistory = useCallback(() => {
     setHistory([]);
-    localStorage.removeItem(STORAGE_KEY);
+    saveServerState(STATE_KEY, []);
   }, []);
 
   const getLastPath = useCallback(
@@ -53,5 +55,5 @@ export function useHistory() {
     [history]
   );
 
-  return { history, addEntry, clearHistory, getLastPath, appliedIds, getAppliedInfo };
+  return { history, loaded, addEntry, clearHistory, getLastPath, appliedIds, getAppliedInfo };
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Chain } from "@/lib/types";
+import { loadServerState, saveServerState } from "@/lib/server-state";
 
 const STORAGE_KEY = "harness-chains";
 
@@ -9,23 +10,17 @@ export function useChains() {
   const [chains, setChains] = useState<Chain[]>([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      setChains(JSON.parse(stored));
-    }
+    loadServerState<Chain[]>(STORAGE_KEY, []).then((data) => {
+      setChains(data);
+    });
   }, []);
-
-  const persist = (next: Chain[]) => {
-    setChains(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  };
 
   const saveChain = useCallback(
     (chain: Chain) => {
       setChains((prev) => {
         const idx = prev.findIndex((c) => c.id === chain.id);
         const next = idx >= 0 ? prev.map((c) => (c.id === chain.id ? chain : c)) : [...prev, chain];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        saveServerState(STORAGE_KEY, next);
         return next;
       });
     },
@@ -36,7 +31,7 @@ export function useChains() {
     (id: string) => {
       setChains((prev) => {
         const next = prev.filter((c) => c.id !== id);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        saveServerState(STORAGE_KEY, next);
         return next;
       });
     },
@@ -82,7 +77,7 @@ export function useChains() {
         };
         setChains((prev) => {
           const next = [...prev, chain];
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+          saveServerState(STORAGE_KEY, next);
           return next;
         });
         return chain;

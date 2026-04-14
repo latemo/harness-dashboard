@@ -6,6 +6,9 @@
 # claude local settings
 .claude/settings.local.json
 
+# server-side state (history, settings)
+/.state
+
 # dependencies
 /node_modules
 /.pnp
