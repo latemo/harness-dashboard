@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getPromptExample } from "@/lib/prompt-examples";
-import { loadServerState, saveServerState } from "@/lib/server-state";
+import { loadServerState, saveServerState, deleteServerState } from "@/lib/server-state";
 
 interface Props {
   projectPath: string;
@@ -74,7 +74,20 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
       if (saved) setPrompt(saved);
     });
     loadServerState<PromptHistoryEntry[]>(historyKey, []).then((saved) => {
-      if (saved.length > 0) setPromptHistory(saved);
+      if (saved.length > 0) {
+        // 로드 시 timestamp 기준 중복 제거 (가장 최근 항목 유지)
+        const seen = new Set<number>();
+        const deduped = [...saved].reverse().filter((h) => {
+          if (seen.has(h.timestamp)) return false;
+          seen.add(h.timestamp);
+          return true;
+        }).reverse();
+        setPromptHistory(deduped);
+        // 중복이 있었으면 정제된 버전으로 서버도 업데이트
+        if (deduped.length !== saved.length) {
+          saveServerState(historyKey, deduped);
+        }
+      }
     });
   }, [storageKey, historyKey]);
   const [preview, setPreview] = useState<{
@@ -90,9 +103,13 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const historyAddedRef = useRef(false);
 
-  // 프롬프트 변경 시 서버에 저장
+  // 프롬프트 변경 시 서버에 저장 (빈 문자열이면 삭제 → 새로고침 시 빈 상태 유지)
   useEffect(() => {
-    if (prompt) saveServerState(storageKey, prompt);
+    if (prompt) {
+      saveServerState(storageKey, prompt);
+    } else {
+      deleteServerState(storageKey);
+    }
   }, [prompt, storageKey]);
 
   // 히스토리 변경 시 서버에 저장
