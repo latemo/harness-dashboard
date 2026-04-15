@@ -103,13 +103,9 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const historyAddedRef = useRef(false);
 
-  // 프롬프트 변경 시 서버에 저장 (빈 문자열이면 삭제 → 새로고침 시 빈 상태 유지)
+  // 프롬프트 변경 시 서버에 저장 (비어있으면 저장 안 함 — 삭제는 실행 성공 시 명시적으로 처리)
   useEffect(() => {
-    if (prompt) {
-      saveServerState(storageKey, prompt);
-    } else {
-      deleteServerState(storageKey);
-    }
+    if (prompt) saveServerState(storageKey, prompt);
   }, [prompt, storageKey]);
 
   // 히스토리 변경 시 서버에 저장
@@ -411,7 +407,8 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
               setStatus(entry.success ? "complete" : "error");
               setHasSession(true);
               if (entry.success) {
-                setPrompt(""); // 성공 시 입력창 클리어
+                setPrompt("");
+                deleteServerState(storageKey); // 서버에서도 즉시 삭제
                 setTimeout(detectPreview, 500);
               }
               // 중복 방지: 한 번만 히스토리에 추가
@@ -427,7 +424,8 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
             } else if (entry.type === "complete") {
               setStatus((prev) => (prev === "running" ? "complete" : prev));
               setHasSession(true);
-              setPrompt(""); // complete 시에도 입력창 클리어
+              setPrompt("");
+              deleteServerState(storageKey);
               setTimeout(detectPreview, 500);
             } else if (entry.type === "error") {
               setStatus("error");
@@ -436,6 +434,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
               setStatus("complete");
               setHasSession(true);
               setPrompt("");
+              deleteServerState(storageKey);
               setTimeout(detectPreview, 500);
             }
           } catch {
@@ -448,6 +447,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
         if (prev === "running") {
           setHasSession(true);
           setPrompt("");
+          deleteServerState(storageKey);
           setTimeout(detectPreview, 500);
           return "complete";
         }
