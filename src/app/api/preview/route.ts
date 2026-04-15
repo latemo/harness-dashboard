@@ -178,8 +178,40 @@ function findFileRecursive(dir: string, filename: string, maxDepth: number): str
   return null;
 }
 
+function isPortFree(port: number): boolean {
+  // netstat 없이 간단하게 실제 OS 포트 점유 여부 확인
+  try {
+    const net = require("net") as typeof import("net");
+    return new Promise((resolve) => {
+      const server = net.createServer();
+      server.once("error", () => resolve(false));
+      server.once("listening", () => { server.close(); resolve(true); });
+      server.listen(port, "127.0.0.1");
+    }) as unknown as boolean; // sync 흉내 — 실제론 아래 getPortAsync 사용
+  } catch { return false; }
+}
+
+async function getPortAsync(preferred?: number): Promise<number> {
+  const net = await import("net");
+  const usedInMap = new Set([...previews.values()].map((s) => s.port));
+  const start = preferred ?? 9100;
+
+  const check = (port: number): Promise<boolean> =>
+    new Promise((resolve) => {
+      if (usedInMap.has(port)) return resolve(false);
+      const s = net.default.createServer();
+      s.once("error", () => resolve(false));
+      s.once("listening", () => { s.close(); resolve(true); });
+      s.listen(port, "127.0.0.1");
+    });
+
+  let port = start;
+  while (!(await check(port))) port++;
+  return port;
+}
+
 function getPort(): number {
-  // 사용 중인 포트 확인 후 비어있는 포트 반환
+  // 간단 fallback (비동기 불가 컨텍스트용): previews Map 기준
   const usedPorts = new Set([...previews.values()].map((s) => s.port));
   let port = 9100;
   while (usedPorts.has(port)) port++;
@@ -323,7 +355,8 @@ export async function POST(req: NextRequest) {
     detected.root = path.resolve(detected.root);
 
     // fullstack: FRONTEND_URL 포트를 우선 사용 (CORS 설정과 일치시키기 위해)
-    const port = detected.fePort ?? getPort();
+    // 실제 OS 포트 점유 여부까지 확인해서 충돌 방지
+    const port = await getPortAsync(detected.fePort ?? 9100);
     const { setupCmd, cmd, args, env: extraEnv } = getStartCommand(detected.type, detected.root, port);
 
     const url = `http://localhost:${port}`;
@@ -365,7 +398,20 @@ export async function POST(req: NextRequest) {
         const text = chunk.toString("utf-8");
         state.logs.push(`[${label}] ${text}`);
         if (state.logs.length > 300) state.logs.shift();
-        if (isRunning(text)) state.status = "running";
+        if (isRunning(text)) {
+          state.status = "running";
+          // 실제 바인딩 포트를 로그에서 파싱해 URL 업데이트
+          // npx serve: "Accepting connections at http://localhost:PORT"
+          // next dev: "Local: http://localhost:PORT", "Ready on http://localhost:PORT"
+          const urlMatch = text.match(/https?:\/\/localhost:(\d+)/i);
+          if (urlMatch && label === "frontend") {
+            const actualPort = parseInt(urlMatch[1]);
+            if (actualPort !== state.port) {
+              state.port = actualPort;
+              state.url = `http://localhost:${actualPort}`;
+            }
+          }
+        }
       };
       proc.stdout.on("data", onData);
       proc.stderr.on("data", onData);
