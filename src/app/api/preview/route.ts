@@ -354,9 +354,8 @@ export async function POST(req: NextRequest) {
     // Windows 경로 정규화 (Turbopack ESM 로더 호환성)
     detected.root = path.resolve(detected.root);
 
-    // fullstack: FRONTEND_URL 포트를 우선 사용 (CORS 설정과 일치시키기 위해)
-    // 실제 OS 포트 점유 여부까지 확인해서 충돌 방지
-    const port = await getPortAsync(detected.fePort ?? 9100);
+    // 항상 비어있는 새 포트를 찾아서 사용 (기존 서버 간섭 없음)
+    const port = await getPortAsync(9100);
     const { setupCmd, cmd, args, env: extraEnv } = getStartCommand(detected.type, detected.root, port);
 
     const url = `http://localhost:${port}`;
