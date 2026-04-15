@@ -185,13 +185,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ detected: false, message: "미리보기 가능한 프로젝트를 찾지 못했습니다." });
     }
     const existing = previews.get(projectPath);
+    // 감지된 프로젝트 타입이 실행 중인 서버와 다르면 stale 서버 종료
+    if (existing && existing.type !== result.type) {
+      existing.proc?.kill("SIGTERM");
+      previews.delete(projectPath);
+    }
+    const fresh = previews.get(projectPath);
     return NextResponse.json({
       detected: true,
       type: result.type,
       label: result.label,
       root: result.root,
-      running: existing?.status === "running",
-      url: existing?.url,
+      running: fresh?.status === "running",
+      url: fresh?.url,
     });
   }
 
