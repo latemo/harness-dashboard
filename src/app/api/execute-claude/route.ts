@@ -1,6 +1,81 @@
 import { NextRequest } from "next/server";
 import * as fs from "fs";
+import * as path from "path";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
+
+// ── 로그 영구 저장 설정 ──
+const LOGS_DIR = path.join(process.cwd(), ".state", "logs");
+const MAX_SESSIONS_PER_PROJECT = 10; // 프로젝트당 최대 저장 세션 수
+
+function projectKey(projectPath: string): string {
+  // 경로를 파일명 안전한 문자열로 변환
+  return projectPath.replace(/[^a-zA-Z0-9가-힣]/g, "_").replace(/_+/g, "_").slice(-60);
+}
+
+function getProjectLogsDir(projectPath: string): string {
+  return path.join(LOGS_DIR, projectKey(projectPath));
+}
+
+function saveSessionLogs(projectPath: string, logs: Record<string, unknown>[], status: string): void {
+  try {
+    const dir = getProjectLogsDir(projectPath);
+    fs.mkdirSync(dir, { recursive: true });
+
+    const timestamp = Date.now();
+    const file = path.join(dir, `${timestamp}.json`);
+    fs.writeFileSync(file, JSON.stringify({ timestamp, status, logs }), "utf-8");
+
+    // 오래된 세션 정리 (MAX 초과 시)
+    const files = fs.readdirSync(dir)
+      .filter((f) => f.endsWith(".json"))
+      .sort(); // 파일명이 timestamp이므로 오름차순 = 오래된 순
+    if (files.length > MAX_SESSIONS_PER_PROJECT) {
+      const toDelete = files.slice(0, files.length - MAX_SESSIONS_PER_PROJECT);
+      for (const f of toDelete) {
+        fs.unlinkSync(path.join(dir, f));
+      }
+    }
+  } catch {
+    // 저장 실패는 무시
+  }
+}
+
+function loadLatestSession(projectPath: string): { timestamp: number; status: string; logs: Record<string, unknown>[] } | null {
+  try {
+    const dir = getProjectLogsDir(projectPath);
+    if (!fs.existsSync(dir)) return null;
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith(".json")).sort();
+    if (files.length === 0) return null;
+    const latest = files[files.length - 1];
+    const raw = fs.readFileSync(path.join(dir, latest), "utf-8");
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function listSessionMeta(projectPath: string): { timestamp: number; status: string }[] {
+  try {
+    const dir = getProjectLogsDir(projectPath);
+    if (!fs.existsSync(dir)) return [];
+    return fs.readdirSync(dir)
+      .filter((f) => f.endsWith(".json"))
+      .sort()
+      .reverse()
+      .map((f) => {
+        try {
+          const raw = fs.readFileSync(path.join(dir, f), "utf-8");
+          const { timestamp, status } = JSON.parse(raw);
+          return { timestamp, status };
+        } catch {
+          return null;
+        }
+      })
+      .filter(Boolean) as { timestamp: number; status: string }[];
+  } catch {
+    return [];
+  }
+}
 
 interface RunState {
   proc?: ChildProcessWithoutNullStreams;
@@ -18,6 +93,16 @@ export async function POST(req: NextRequest) {
   if (action === "status") {
     const state = runningStates.get(projectPath);
     if (!state) {
+      // 메모리에 없으면 파일에서 최신 세션 복원
+      const saved = loadLatestSession(projectPath);
+      if (saved) {
+        return Response.json({
+          running: false,
+          status: saved.status,
+          logs: saved.logs,
+          fromFile: true,
+        });
+      }
       return Response.json({ running: false, logs: [] });
     }
     return Response.json({
@@ -25,6 +110,11 @@ export async function POST(req: NextRequest) {
       status: state.status,
       logs: state.logs,
     });
+  }
+
+  // ── 저장된 세션 목록 조회 ──
+  if (action === "sessions") {
+    return Response.json({ sessions: listSessionMeta(projectPath) });
   }
 
   // ── 중지 요청 ──
@@ -174,7 +264,10 @@ function executeWithCli(projectPath: string, prompt: string, continueSession: bo
           // already closed
         }
 
-        // 30분 후 로그 자동 정리
+        // 완료 시 로그를 파일에 영구 저장
+        saveSessionLogs(projectPath, state.logs, state.status);
+
+        // 30분 후 메모리 로그 자동 정리
         setTimeout(() => {
           const s = runningStates.get(projectPath);
           if (s && s.status !== "running") {
@@ -186,6 +279,7 @@ function executeWithCli(projectPath: string, prompt: string, continueSession: bo
       proc.on("error", (err) => {
         state.status = "error";
         send({ type: "error", data: err.message });
+        saveSessionLogs(projectPath, state.logs, "error");
         try {
           controller.close();
         } catch {
