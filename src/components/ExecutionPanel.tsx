@@ -910,6 +910,11 @@ function ChatTurn({
             <div className="text-muted-foreground text-xs">응답을 기다리는 중...</div>
           )}
 
+          {/* 이전 기록 (응답 미저장) */}
+          {!isLive && !isError && !claudeMessage && (durationSec || costUsd) && (
+            <div className="text-muted-foreground/50 text-xs italic">응답이 저장되지 않은 기록입니다</div>
+          )}
+
           {/* 메타 정보 + 로그 토글 */}
           {(durationSec || costUsd || toolLogs.length > 0) && (
             <div className="flex items-center gap-3 text-[10px] text-muted-foreground pt-1 border-t border-white/10">
