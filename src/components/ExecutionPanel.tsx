@@ -514,14 +514,58 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
   return (
     <div className="space-y-4">
       <Card className="border-border/50">
-        <CardContent className="p-5 space-y-4">
-          <h3 className="text-sm font-semibold flex items-center gap-2">
+        <CardContent className="p-0 flex flex-col">
+          {/* 헤더 */}
+          <div className="px-5 pt-5 pb-3 flex items-center gap-2 border-b border-border/30">
             <Play className="h-4 w-4" />
-            웹에서 바로 실행
-          </h3>
+            <h3 className="text-sm font-semibold">웹에서 바로 실행</h3>
+          </div>
 
-          {/* 프롬프트 입력 */}
-          <div className="space-y-2">
+          {/* ── 채팅 타임라인 ── */}
+          <div
+            className="flex-1 space-y-4 overflow-y-auto px-5 py-4 min-h-[80px]"
+            style={{ maxHeight: "600px" }}
+            ref={logRef}
+          >
+            {promptHistory.length === 0 && !submittedPrompt && (
+              <p className="text-xs text-muted-foreground text-center py-4">
+                아래 입력창에 프롬프트를 입력하고 실행하세요.
+              </p>
+            )}
+            {/* 과거 대화 */}
+            {promptHistory.map((entry) => (
+              <ChatTurn
+                key={entry.timestamp}
+                userMessage={entry.prompt}
+                claudeMessage={entry.resultText}
+                timestamp={entry.timestamp}
+                costUsd={entry.costUsd}
+                durationSec={entry.durationSec}
+                continued={entry.continued}
+                logs={[]}
+              />
+            ))}
+            {/* 현재 실행 */}
+            {submittedPrompt && (
+              <ChatTurn
+                userMessage={submittedPrompt}
+                claudeMessage={status === "complete" || status === "error" ? currentResultText : undefined}
+                timestamp={currentTimestamp}
+                costUsd={currentCostUsd}
+                durationSec={currentDurationSec}
+                continued={false}
+                logs={logs}
+                isLive={status === "running"}
+                elapsed={elapsed}
+                reconnected={reconnected}
+                agentCount={agentCount}
+                isError={status === "error"}
+              />
+            )}
+          </div>
+
+          {/* ── 프롬프트 입력 (하단 고정) ── */}
+          <div className="px-5 pb-5 pt-3 border-t border-border/30 space-y-2">
             <div className="flex gap-2">
               <textarea
                 value={prompt}
@@ -533,7 +577,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
                   }
                 }}
                 placeholder={hasSession ? "이전 작업을 이어서 수정할 내용을 입력하세요..." : getPromptExample(harnessNumber)}
-                className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring min-h-[44px] max-h-[120px]"
+                className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring min-h-[44px] max-h-[160px]"
                 rows={2}
                 disabled={status === "running"}
               />
@@ -576,55 +620,16 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
                 )}
               </div>
             </div>
-
-            {/* 세션 이어하기 안내 */}
-            {hasSession && status === "complete" && (
+            {hasSession && status !== "running" && (
               <div className="flex items-center gap-2 text-xs text-blue-400">
                 <RotateCcw className="h-3 w-3" />
                 <span>이전 세션이 유지됩니다. 수정 사항을 입력하면 이어서 작업합니다.</span>
               </div>
             )}
-
           </div>
 
-          {/* ── 채팅 타임라인 ── */}
-          {(promptHistory.length > 0 || submittedPrompt) && (
-            <div className="space-y-4 max-h-[700px] overflow-y-auto pr-1" ref={logRef}>
-              {/* 과거 대화 */}
-              {promptHistory.map((entry) => (
-                <ChatTurn
-                  key={entry.timestamp}
-                  userMessage={entry.prompt}
-                  claudeMessage={entry.resultText}
-                  timestamp={entry.timestamp}
-                  costUsd={entry.costUsd}
-                  durationSec={entry.durationSec}
-                  continued={entry.continued}
-                  logs={[]}
-                />
-              ))}
-
-              {/* 현재 실행 */}
-              {submittedPrompt && (
-                <ChatTurn
-                  userMessage={submittedPrompt}
-                  claudeMessage={status === "complete" || status === "error" ? currentResultText : undefined}
-                  timestamp={currentTimestamp}
-                  costUsd={currentCostUsd}
-                  durationSec={currentDurationSec}
-                  continued={false}
-                  logs={logs}
-                  isLive={status === "running"}
-                  elapsed={elapsed}
-                  reconnected={reconnected}
-                  agentCount={agentCount}
-                  isError={status === "error"}
-                />
-              )}
-            </div>
-          )}
-
-          {/* 미리보기 버튼 */}
+          {/* 미리보기 버튼 (카드 내 하단) */}
+          <div className="px-5 pb-5 space-y-3">
           {status !== "running" && preview?.detected && (
             <div className="rounded-lg border border-purple-500/30 bg-purple-500/5 p-3">
               <div className="flex items-center justify-between">
@@ -703,27 +708,24 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
             </div>
           )}
 
+          {/* 터미널 열기 버튼 */}
+          <div className="border-t border-border/30 pt-3 mt-1">
+            <p className="text-xs text-muted-foreground mb-2">또는 터미널에서 직접 실행</p>
+            <div className="grid grid-cols-2 gap-2">
+              <Button onClick={() => onOpenClaude(false)} variant="outline" className="gap-2">
+                <Terminal className="h-4 w-4" />
+                일반 모드
+              </Button>
+              <Button onClick={() => onOpenClaude(true)} variant="outline" className="gap-2">
+                <Rocket className="h-4 w-4" />
+                바이패스 모드
+              </Button>
+            </div>
+          </div>
+
+        </div>{/* /미리보기+터미널 버튼 */}
         </CardContent>
       </Card>
-
-      {/* 구분선 */}
-      <div className="flex items-center gap-3">
-        <Separator className="flex-1" />
-        <span className="text-xs text-muted-foreground">또는 터미널에서 직접 실행</span>
-        <Separator className="flex-1" />
-      </div>
-
-      {/* 터미널 열기 버튼 */}
-      <div className="grid grid-cols-2 gap-2">
-        <Button onClick={() => onOpenClaude(false)} variant="outline" className="gap-2">
-          <Terminal className="h-4 w-4" />
-          일반 모드
-        </Button>
-        <Button onClick={() => onOpenClaude(true)} variant="outline" className="gap-2">
-          <Rocket className="h-4 w-4" />
-          바이패스 모드
-        </Button>
-      </div>
     </div>
   );
 }
