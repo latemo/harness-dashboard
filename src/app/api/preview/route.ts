@@ -17,6 +17,19 @@ interface PreviewState {
 const previews = new Map<string, PreviewState>();
 let nextPort = 9100;
 
+// 핫리로드 시 고아 프로세스 정리 (Next.js dev 환경)
+if (process.env.NODE_ENV === "development") {
+  const g = globalThis as typeof globalThis & { __previewCleanup?: () => void };
+  if (g.__previewCleanup) g.__previewCleanup();
+  g.__previewCleanup = () => {
+    for (const [, state] of previews) {
+      state.proc?.kill("SIGTERM");
+      state.backendProc?.kill("SIGTERM");
+    }
+    previews.clear();
+  };
+}
+
 /**
  * 프로젝트 유형 감지
  */
