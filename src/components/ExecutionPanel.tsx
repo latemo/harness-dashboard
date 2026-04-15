@@ -641,43 +641,46 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
             </div>
           )}
 
-          {/* 완료 상태 */}
-          {status === "complete" && resultEntry && (
-            <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-3">
+          {/* 완료 상태 + Claude 응답 */}
+          {status === "complete" && (
+            <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-3 space-y-2">
+              {/* 헤더: 완료 + 통계 */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm text-green-400">
                   <CheckCircle2 className="h-4 w-4" />
                   실행 완료
                 </div>
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  {resultEntry.durationSec && (
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {Number(resultEntry.durationSec) >= 60
-                        ? `${Math.floor(Number(resultEntry.durationSec) / 60)}분 ${Math.round(Number(resultEntry.durationSec) % 60)}초`
-                        : `${resultEntry.durationSec}초`}
-                    </span>
-                  )}
-                  {resultEntry.turns && (
-                    <span className="flex items-center gap-1">
-                      <Zap className="h-3 w-3" />
-                      {resultEntry.turns}턴
-                    </span>
-                  )}
-                  {resultEntry.costUsd && (
-                    <span className="flex items-center gap-1">
-                      <DollarSign className="h-3 w-3" />
-                      ${resultEntry.costUsd}
-                    </span>
-                  )}
-                </div>
+                {resultEntry && (
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    {resultEntry.durationSec && (
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {Number(resultEntry.durationSec) >= 60
+                          ? `${Math.floor(Number(resultEntry.durationSec) / 60)}분 ${Math.round(Number(resultEntry.durationSec) % 60)}초`
+                          : `${resultEntry.durationSec}초`}
+                      </span>
+                    )}
+                    {resultEntry.turns && (
+                      <span className="flex items-center gap-1">
+                        <Zap className="h-3 w-3" />
+                        {resultEntry.turns}턴
+                      </span>
+                    )}
+                    {resultEntry.costUsd && (
+                      <span className="flex items-center gap-1">
+                        <DollarSign className="h-3 w-3" />
+                        ${resultEntry.costUsd}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
-            </div>
-          )}
-          {status === "complete" && !resultEntry && (
-            <div className="flex items-center gap-2 text-sm text-green-400">
-              <CheckCircle2 className="h-4 w-4" />
-              실행 완료
+              {/* Claude 답변 본문 */}
+              {resultEntry?.data && (
+                <div className="border-t border-green-500/20 pt-2">
+                  <ClaudeResponse text={resultEntry.data} />
+                </div>
+              )}
             </div>
           )}
 
@@ -889,6 +892,24 @@ function LogLine({ entry, expanded, onToggle }: { entry: LogEntry; expanded: boo
     default:
       return <div className="text-gray-300 py-0.5">{entry.data}</div>;
   }
+}
+
+function ClaudeResponse({ text }: { text: string }) {
+  const PREVIEW = 600;
+  const [expanded, setExpanded] = useState(text.length <= PREVIEW);
+  return (
+    <div className="text-sm text-green-100/90 whitespace-pre-wrap leading-relaxed">
+      {expanded ? text : text.slice(0, PREVIEW) + "…"}
+      {text.length > PREVIEW && (
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="ml-2 text-xs text-green-500 hover:text-green-300 underline"
+        >
+          {expanded ? "접기" : `더 보기 (${text.length}자)`}
+        </button>
+      )}
+    </div>
+  );
 }
 
 function ResultEntry({ data }: { data: string }) {
