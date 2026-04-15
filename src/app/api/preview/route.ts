@@ -26,6 +26,7 @@ function detectProjectType(projectPath: string): {
   label: string;
   backendRoot?: string;
   backendPort?: number;
+  fePort?: number; // FRONTEND_URL에서 읽은 프론트엔드 포트
 } | null {
   // ── Fullstack 감지: frontend + backend 디렉토리가 나란히 있는 경우 ──
   const checkFullstack = (base: string) => {
@@ -41,15 +42,19 @@ function detectProjectType(projectPath: string): {
         fs.existsSync(path.join(feDir, "package.json")) &&
         fs.existsSync(path.join(beDir, "package.json"))
       ) {
-        // 백엔드 포트 추출 (.env 우선)
+        // 백엔드 .env에서 PORT, FRONTEND_URL 추출
         let bePort = 4000;
+        let fePort: number | undefined;
         const envFile = path.join(beDir, ".env");
         if (fs.existsSync(envFile)) {
           const envContent = fs.readFileSync(envFile, "utf-8");
-          const match = envContent.match(/^PORT\s*=\s*(\d+)/m);
-          if (match) bePort = parseInt(match[1]);
+          const portMatch = envContent.match(/^PORT\s*=\s*(\d+)/m);
+          if (portMatch) bePort = parseInt(portMatch[1]);
+          // FRONTEND_URL에서 포트 추출 → 프론트엔드를 이 포트로 실행
+          const feUrlMatch = envContent.match(/^FRONTEND_URL\s*=\s*http:\/\/[^:]+:(\d+)/m);
+          if (feUrlMatch) fePort = parseInt(feUrlMatch[1]);
         }
-        return { feDir, beDir, bePort };
+        return { feDir, beDir, bePort, fePort };
       }
     }
     return null;
@@ -68,6 +73,7 @@ function detectProjectType(projectPath: string): {
         label: "Fullstack (Frontend + Backend)",
         backendRoot: fs2.beDir,
         backendPort: fs2.bePort,
+        fePort: fs2.fePort,
       };
     }
   }
@@ -303,7 +309,8 @@ export async function POST(req: NextRequest) {
     // Windows 경로 정규화 (Turbopack ESM 로더 호환성)
     detected.root = path.resolve(detected.root);
 
-    const port = getPort();
+    // fullstack: FRONTEND_URL 포트를 우선 사용 (CORS 설정과 일치시키기 위해)
+    const port = detected.fePort ?? getPort();
     const { setupCmd, cmd, args, env: extraEnv } = getStartCommand(detected.type, detected.root, port);
 
     const url = `http://localhost:${port}`;
