@@ -7,18 +7,12 @@ import {
   Terminal,
   Rocket,
   Loader2,
-  CheckCircle2,
   AlertCircle,
   ChevronDown,
   ChevronRight,
-  Clock,
-  Zap,
-  DollarSign,
-  RefreshCw,
   Eye,
   ExternalLink,
   X,
-  History,
   RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -53,6 +47,7 @@ interface PromptHistoryEntry {
   costUsd?: string;
   durationSec?: string;
   continued?: boolean;
+  resultText?: string; // Claude 최종 답변
 }
 
 export default function ExecutionPanel({ projectPath, agentCount, harnessNumber, onOpenClaude }: Props) {
@@ -64,9 +59,14 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
   const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [reconnected, setReconnected] = useState(false);
-  const [hasSession, setHasSession] = useState(false); // 이전 세션 존재 여부
+  const [hasSession, setHasSession] = useState(false);
   const [promptHistory, setPromptHistory] = useState<PromptHistoryEntry[]>([]);
-  const [showHistory, setShowHistory] = useState(false);
+  // 현재 실행 추적 (채팅 말풍선용)
+  const [submittedPrompt, setSubmittedPrompt] = useState("");
+  const [currentTimestamp, setCurrentTimestamp] = useState(0);
+  const [currentResultText, setCurrentResultText] = useState("");
+  const [currentCostUsd, setCurrentCostUsd] = useState("");
+  const [currentDurationSec, setCurrentDurationSec] = useState("");
 
   // 서버에서 프롬프트 및 히스토리 로드
   useEffect(() => {
@@ -346,14 +346,23 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
     }
 
     // 히스토리 항목 준비
+    const ts = Date.now();
     const historyEntry: PromptHistoryEntry = {
       prompt: prompt.trim(),
-      timestamp: Date.now(),
+      timestamp: ts,
       continued: isContinue,
     };
     historyAddedRef.current = false;
 
+    // 채팅 말풍선용 현재 실행 정보 초기화
+    setSubmittedPrompt(prompt.trim());
+    setCurrentTimestamp(ts);
+    setCurrentResultText("");
+    setCurrentCostUsd("");
+    setCurrentDurationSec("");
+
     setStatus("running");
+    setLogs([]);
     setExpandedIdx(null);
     setReconnected(false);
     abortRef.current = new AbortController();
@@ -406,6 +415,10 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
             if (entry.type === "result") {
               setStatus(entry.success ? "complete" : "error");
               setHasSession(true);
+              // 채팅 말풍선용 결과 저장
+              setCurrentResultText(entry.data || "");
+              setCurrentCostUsd(entry.costUsd || "");
+              setCurrentDurationSec(entry.durationSec || "");
               if (entry.success) {
                 setPrompt("");
                 deleteServerState(storageKey); // 서버에서도 즉시 삭제
@@ -416,6 +429,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
                 historyAddedRef.current = true;
                 historyEntry.costUsd = entry.costUsd;
                 historyEntry.durationSec = entry.durationSec;
+                historyEntry.resultText = entry.data; // Claude 답변 저장
                 setPromptHistory((prev) => {
                   const deduped = prev.filter((h) => h.timestamp !== historyEntry.timestamp);
                   return [...deduped, historyEntry].slice(-20);
@@ -492,9 +506,6 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
     setStatus("idle");
   };
 
-  const resultEntry = logs.find((l) => l.type === "result");
-  const toolCount = logs.filter((l) => l.type === "tool_use").length;
-
   return (
     <div className="space-y-4">
       <Card className="border-border/50">
@@ -569,117 +580,41 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
               </div>
             )}
 
-            {/* 프롬프트 히스토리 */}
-            {promptHistory.length > 0 && (
-              <div>
-                <button
-                  onClick={() => setShowHistory(!showHistory)}
-                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <History className="h-3 w-3" />
-                  실행 이력 ({promptHistory.length})
-                  {showHistory ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-                </button>
-                {showHistory && (
-                  <div className="mt-2 rounded-lg border border-border/50 bg-background/50 max-h-[200px] overflow-y-auto">
-                    {[...promptHistory].reverse().map((entry, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setPrompt(entry.prompt)}
-                        className="w-full text-left px-3 py-2 text-xs hover:bg-accent/50 transition-colors border-b border-border/30 last:border-b-0"
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="truncate text-foreground">
-                            {entry.continued && <span className="text-blue-400 mr-1">↩</span>}
-                            {entry.prompt}
-                          </span>
-                          <span className="shrink-0 text-muted-foreground">
-                            {entry.costUsd && `$${entry.costUsd}`}
-                            {entry.durationSec && ` · ${Number(entry.durationSec) >= 60 ? `${Math.floor(Number(entry.durationSec) / 60)}분` : `${Math.round(Number(entry.durationSec))}초`}`}
-                          </span>
-                        </div>
-                        <div className="text-muted-foreground mt-0.5">
-                          {new Date(entry.timestamp).toLocaleString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
           </div>
 
-          {/* 실행 중 상태 바 */}
-          {status === "running" && (
-            <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-3 space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm text-blue-400">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>
-                    {reconnected && "재연결됨 · "}
-                    {agentCount}명의 에이전트 팀이 작업 중...
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <Clock className="h-3 w-3" />
-                    {formatElapsed(elapsed)}
-                  </span>
-                  {toolCount > 0 && (
-                    <span className="flex items-center gap-1">
-                      <Zap className="h-3 w-3" />
-                      도구 {toolCount}회
-                    </span>
-                  )}
-                </div>
-              </div>
-              {logs.length > 0 && (
-                <div className="text-xs text-muted-foreground truncate">
-                  {logs[logs.length - 1]?.data}
-                </div>
-              )}
-            </div>
-          )}
+          {/* ── 채팅 타임라인 ── */}
+          {(promptHistory.length > 0 || submittedPrompt) && (
+            <div className="space-y-4 max-h-[700px] overflow-y-auto pr-1" ref={logRef}>
+              {/* 과거 대화 */}
+              {promptHistory.map((entry) => (
+                <ChatTurn
+                  key={entry.timestamp}
+                  userMessage={entry.prompt}
+                  claudeMessage={entry.resultText}
+                  timestamp={entry.timestamp}
+                  costUsd={entry.costUsd}
+                  durationSec={entry.durationSec}
+                  continued={entry.continued}
+                  logs={[]}
+                />
+              ))}
 
-          {/* 완료 상태 + Claude 응답 */}
-          {status === "complete" && (
-            <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-3 space-y-2">
-              {/* 헤더: 완료 + 통계 */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm text-green-400">
-                  <CheckCircle2 className="h-4 w-4" />
-                  실행 완료
-                </div>
-                {resultEntry && (
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    {resultEntry.durationSec && (
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {Number(resultEntry.durationSec) >= 60
-                          ? `${Math.floor(Number(resultEntry.durationSec) / 60)}분 ${Math.round(Number(resultEntry.durationSec) % 60)}초`
-                          : `${resultEntry.durationSec}초`}
-                      </span>
-                    )}
-                    {resultEntry.turns && (
-                      <span className="flex items-center gap-1">
-                        <Zap className="h-3 w-3" />
-                        {resultEntry.turns}턴
-                      </span>
-                    )}
-                    {resultEntry.costUsd && (
-                      <span className="flex items-center gap-1">
-                        <DollarSign className="h-3 w-3" />
-                        ${resultEntry.costUsd}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-              {/* Claude 답변 본문 */}
-              {resultEntry?.data && (
-                <div className="border-t border-green-500/20 pt-2">
-                  <ClaudeResponse text={resultEntry.data} />
-                </div>
+              {/* 현재 실행 */}
+              {submittedPrompt && (
+                <ChatTurn
+                  userMessage={submittedPrompt}
+                  claudeMessage={status === "complete" || status === "error" ? currentResultText : undefined}
+                  timestamp={currentTimestamp}
+                  costUsd={currentCostUsd}
+                  durationSec={currentDurationSec}
+                  continued={false}
+                  logs={logs}
+                  isLive={status === "running"}
+                  elapsed={elapsed}
+                  reconnected={reconnected}
+                  agentCount={agentCount}
+                  isError={status === "error"}
+                />
               )}
             </div>
           )}
@@ -763,48 +698,6 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
             </div>
           )}
 
-          {/* 에러 상태 */}
-          {status === "error" && (
-            <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-3">
-              <div className="flex items-center gap-2 text-sm text-red-400">
-                <AlertCircle className="h-4 w-4" />
-                실행 중 오류 발생
-              </div>
-            </div>
-          )}
-
-          {/* 출력 로그 */}
-          {logs.length > 0 && (
-            <>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">
-                  로그 ({logs.length}건)
-                </span>
-                {status !== "running" && (
-                  <button
-                    onClick={handleClearLogs}
-                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <RefreshCw className="h-3 w-3" />
-                    로그 초기화
-                  </button>
-                )}
-              </div>
-              <div
-                ref={logRef}
-                className="rounded-lg bg-[#0d1117] border border-border/30 p-3 font-mono text-xs leading-relaxed max-h-[500px] overflow-y-auto space-y-0.5"
-              >
-                {logs.map((log, i) => (
-                  <LogLine
-                    key={i}
-                    entry={log}
-                    expanded={expandedIdx === i}
-                    onToggle={() => setExpandedIdx(expandedIdx === i ? null : i)}
-                  />
-                ))}
-              </div>
-            </>
-          )}
         </CardContent>
       </Card>
 
@@ -926,6 +819,129 @@ function ResultEntry({ data }: { data: string }) {
           {expanded ? "접기" : `더 보기 (${data.length}자)`}
         </button>
       )}
+    </div>
+  );
+}
+
+interface ChatTurnProps {
+  userMessage: string;
+  claudeMessage?: string;
+  timestamp: number;
+  costUsd?: string;
+  durationSec?: string;
+  continued?: boolean;
+  logs: LogEntry[];
+  isLive?: boolean;
+  elapsed?: number;
+  reconnected?: boolean;
+  agentCount?: number;
+  isError?: boolean;
+}
+
+function ChatTurn({
+  userMessage,
+  claudeMessage,
+  timestamp,
+  costUsd,
+  durationSec,
+  continued,
+  logs,
+  isLive,
+  elapsed = 0,
+  reconnected,
+  agentCount,
+  isError,
+}: ChatTurnProps) {
+  const [showLogs, setShowLogs] = useState(false);
+  const [expandedLogIdx, setExpandedLogIdx] = useState<number | null>(null);
+
+  const toolLogs = logs.filter((l) =>
+    ["tool_use", "tool_result", "assistant_text", "status", "init", "stderr", "error", "stdout"].includes(l.type)
+  );
+  const lastToolLog = [...logs].reverse().find((l) => l.type === "tool_use");
+
+  const formatDur = (sec: string | undefined) => {
+    if (!sec) return "";
+    const n = Number(sec);
+    return n >= 60 ? `${Math.floor(n / 60)}분 ${Math.round(n % 60)}초` : `${sec}초`;
+  };
+
+  return (
+    <div className="space-y-2">
+      {/* 사용자 말풍선 (우측) */}
+      <div className="flex justify-end items-end gap-2">
+        <span className="text-[10px] text-muted-foreground shrink-0">
+          {new Date(timestamp).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
+        </span>
+        <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-blue-600/20 border border-blue-500/30 px-3 py-2 text-sm text-blue-100">
+          {continued && <span className="text-blue-400 text-xs mr-1">↩ 이어서</span>}
+          <span className="whitespace-pre-wrap break-words">{userMessage}</span>
+        </div>
+      </div>
+
+      {/* Claude 말풍선 (좌측) */}
+      <div className="flex gap-2">
+        <div className="max-w-[90%] rounded-2xl rounded-tl-sm bg-white/5 border border-white/10 px-3 py-2 text-sm space-y-2">
+          {/* 실행 중 인디케이터 */}
+          {isLive && (
+            <div className="flex items-center gap-2 text-blue-400 text-xs">
+              <Loader2 className="h-3 w-3 animate-spin shrink-0" />
+              <span className="truncate">
+                {reconnected && "재연결됨 · "}
+                {lastToolLog ? lastToolLog.data : agentCount ? `${agentCount}명의 에이전트 팀이 작업 중...` : "작업 중..."}
+              </span>
+              {elapsed > 0 && <span className="text-muted-foreground shrink-0">{elapsed}초</span>}
+            </div>
+          )}
+
+          {/* 에러 상태 */}
+          {isError && !claudeMessage && (
+            <div className="flex items-center gap-2 text-red-400 text-xs">
+              <AlertCircle className="h-3 w-3 shrink-0" />
+              실행 중 오류가 발생했습니다
+            </div>
+          )}
+
+          {/* Claude 답변 */}
+          {claudeMessage && <ClaudeResponse text={claudeMessage} />}
+
+          {/* 대기 중 플레이스홀더 (실행 중이고 아직 도구 사용도 없을 때) */}
+          {isLive && !lastToolLog && !claudeMessage && (
+            <div className="text-muted-foreground text-xs">응답을 기다리는 중...</div>
+          )}
+
+          {/* 메타 정보 + 로그 토글 */}
+          {(durationSec || costUsd || toolLogs.length > 0) && (
+            <div className="flex items-center gap-3 text-[10px] text-muted-foreground pt-1 border-t border-white/10">
+              {durationSec && <span>{formatDur(durationSec)}</span>}
+              {costUsd && <span>${costUsd}</span>}
+              {toolLogs.length > 0 && (
+                <button
+                  onClick={() => setShowLogs((v) => !v)}
+                  className="flex items-center gap-1 hover:text-foreground transition-colors"
+                >
+                  <Terminal className="h-3 w-3" />
+                  {showLogs ? "로그 닫기" : `상세 로그 (${toolLogs.length})`}
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* 상세 로그 패널 */}
+          {showLogs && toolLogs.length > 0 && (
+            <div className="rounded bg-[#0d1117] p-2 font-mono text-[11px] max-h-[300px] overflow-y-auto space-y-0.5 border border-white/10">
+              {toolLogs.map((log, i) => (
+                <LogLine
+                  key={i}
+                  entry={log}
+                  expanded={expandedLogIdx === i}
+                  onToggle={() => setExpandedLogIdx(expandedLogIdx === i ? null : i)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
