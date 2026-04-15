@@ -4,8 +4,10 @@ import * as path from "path";
 import { spawn, ChildProcessWithoutNullStreams } from "child_process";
 
 interface PreviewState {
-  proc?: ChildProcessWithoutNullStreams;
+  proc?: ChildProcessWithoutNullStreams;       // 프론트엔드 프로세스
+  backendProc?: ChildProcessWithoutNullStreams; // 백엔드 프로세스 (fullstack)
   port: number;
+  backendPort?: number;
   type: string;
   url: string;
   status: "starting" | "running" | "error";
@@ -22,7 +24,54 @@ function detectProjectType(projectPath: string): {
   type: string;
   root: string;
   label: string;
+  backendRoot?: string;
+  backendPort?: number;
 } | null {
+  // ── Fullstack 감지: frontend + backend 디렉토리가 나란히 있는 경우 ──
+  const checkFullstack = (base: string) => {
+    const candidates = [
+      { fe: "frontend", be: "backend" },
+      { fe: "client", be: "server" },
+      { fe: "web", be: "api" },
+    ];
+    for (const { fe, be } of candidates) {
+      const feDir = path.join(base, fe);
+      const beDir = path.join(base, be);
+      if (
+        fs.existsSync(path.join(feDir, "package.json")) &&
+        fs.existsSync(path.join(beDir, "package.json"))
+      ) {
+        // 백엔드 포트 추출 (.env 우선)
+        let bePort = 4000;
+        const envFile = path.join(beDir, ".env");
+        if (fs.existsSync(envFile)) {
+          const envContent = fs.readFileSync(envFile, "utf-8");
+          const match = envContent.match(/^PORT\s*=\s*(\d+)/m);
+          if (match) bePort = parseInt(match[1]);
+        }
+        return { feDir, beDir, bePort };
+      }
+    }
+    return null;
+  };
+
+  // src/ 하위에서 fullstack 패턴 우선 검색
+  const srcDir = path.join(projectPath, "src");
+  const wsDir = path.join(projectPath, "_workspace");
+  for (const base of [srcDir, wsDir, projectPath]) {
+    if (!fs.existsSync(base)) continue;
+    const fs2 = checkFullstack(base);
+    if (fs2) {
+      return {
+        type: "fullstack",
+        root: fs2.feDir,
+        label: "Fullstack (Frontend + Backend)",
+        backendRoot: fs2.beDir,
+        backendPort: fs2.bePort,
+      };
+    }
+  }
+
   // 검색 대상 디렉토리 목록: _workspace, src, 프로젝트 루트 순으로 탐색
   const searchDirs: string[] = [];
   const ws = path.join(projectPath, "_workspace");
@@ -147,6 +196,12 @@ function getStartCommand(type: string, root: string, port: number): {
         args: ["react-scripts", "start"],
         env: { PORT: String(port), BROWSER: "none" },
       };
+    case "fullstack":
+      return {
+        setupCmd: "npm install",
+        cmd: "npx",
+        args: ["next", "dev", "--port", String(port)],
+      };
     case "node":
       return {
         setupCmd: "npm install",
@@ -196,6 +251,7 @@ export async function POST(req: NextRequest) {
       type: result.type,
       label: result.label,
       root: result.root,
+      backendPort: result.backendPort,
       running: fresh?.status === "running",
       url: fresh?.url,
     });
@@ -204,8 +260,9 @@ export async function POST(req: NextRequest) {
   // ── 중지 ──
   if (action === "stop") {
     const state = previews.get(projectPath);
-    if (state?.proc) {
-      state.proc.kill("SIGTERM");
+    if (state) {
+      state.proc?.kill("SIGTERM");
+      state.backendProc?.kill("SIGTERM");
       previews.delete(projectPath);
     }
     return NextResponse.json({ stopped: true });
@@ -260,9 +317,58 @@ export async function POST(req: NextRequest) {
     };
     previews.set(projectPath, state);
 
+    // ── 프로세스 시작 헬퍼 ──
+    const spawnServer = (
+      spawnCmd: string,
+      spawnArgs: string[],
+      cwd: string,
+      spawnEnv: Record<string, string>,
+      label: string,
+    ): ChildProcessWithoutNullStreams => {
+      const proc = spawn(spawnCmd, spawnArgs, {
+        cwd,
+        shell: true,
+        stdio: ["pipe", "pipe", "pipe"],
+        env: { ...process.env, ...spawnEnv },
+      });
+      const isRunning = (text: string) =>
+        text.includes("localhost") ||
+        text.includes("Local:") ||
+        text.includes("Accepting connections") ||
+        text.includes("listening") ||
+        text.includes("ready") ||
+        text.includes("Started") ||
+        text.includes("Running on") ||
+        text.includes("debug service");
+
+      const onData = (chunk: Buffer) => {
+        const text = chunk.toString("utf-8");
+        state.logs.push(`[${label}] ${text}`);
+        if (state.logs.length > 300) state.logs.shift();
+        if (isRunning(text)) state.status = "running";
+      };
+      proc.stdout.on("data", onData);
+      proc.stderr.on("data", onData);
+      proc.on("error", (err) => {
+        state.logs.push(`[${label} error] ${err.message}\n`);
+      });
+      proc.on("close", (code) => {
+        state.logs.push(`[${label}] process exited with code ${code}\n`);
+        const s = previews.get(projectPath);
+        if (s && s.proc !== proc && s.backendProc !== proc) return;
+        if (s && s.status !== "running") {
+          s.status = "error";
+          setTimeout(() => { if (previews.get(projectPath) === s) previews.delete(projectPath); }, 300000);
+        } else if (s) {
+          previews.delete(projectPath);
+        }
+      });
+      return proc;
+    };
+
     // 비동기로 빌드 + 서버 시작 파이프라인 실행 (API는 즉시 응답)
     (async () => {
-      // 의존성 설치 / 빌드 (비동기)
+      // 의존성 설치 (프론트엔드)
       if (setupCmd) {
         try {
           state.logs.push(`[setup] ${setupCmd}\n`);
@@ -275,22 +381,18 @@ export async function POST(req: NextRequest) {
             });
             setupProc.stdout.on("data", (chunk: Buffer) => {
               state.logs.push(chunk.toString("utf-8"));
-              if (state.logs.length > 200) state.logs.shift();
+              if (state.logs.length > 300) state.logs.shift();
             });
             setupProc.stderr.on("data", (chunk: Buffer) => {
               state.logs.push(chunk.toString("utf-8"));
-              if (state.logs.length > 200) state.logs.shift();
+              if (state.logs.length > 300) state.logs.shift();
             });
             setupProc.on("close", (code) => {
               if (code === 0) resolve();
               else reject(new Error(`setup exited with code ${code}`));
             });
             setupProc.on("error", reject);
-            // 5분 타임아웃
-            setTimeout(() => {
-              setupProc.kill("SIGTERM");
-              reject(new Error("setup timeout (5min)"));
-            }, 300000);
+            setTimeout(() => { setupProc.kill("SIGTERM"); reject(new Error("setup timeout (5min)")); }, 300000);
           });
         } catch (err) {
           const msg = err instanceof Error ? err.message : String(err);
@@ -300,67 +402,39 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // 서버 실행
-      const proc = spawn(cmd, args, {
-        cwd: detected.root,
-        shell: true,
-        stdio: ["pipe", "pipe", "pipe"],
-        env: { ...process.env, ...extraEnv },
-      });
+      // ── Fullstack: 백엔드 먼저 시작 ──
+      if (detected.type === "fullstack" && detected.backendRoot) {
+        state.logs.push(`[backend] npm install\n`);
+        try {
+          const cp = await import("child_process");
+          await new Promise<void>((resolve) => {
+            const p = cp.spawn("npm install", [], { cwd: detected.backendRoot, shell: true, stdio: "pipe" });
+            p.on("close", () => resolve());
+            p.on("error", () => resolve()); // 설치 실패해도 계속 진행
+          });
+        } catch { /* ignore */ }
 
-      state.proc = proc;
+        state.backendProc = spawnServer(
+          "npm", ["run", "dev"],
+          detected.backendRoot!,
+          {},
+          "backend",
+        );
+        state.backendPort = detected.backendPort;
+        state.logs.push(`[backend] starting on port ${detected.backendPort ?? 4000}...\n`);
+        // 백엔드가 준비될 때까지 잠시 대기 (2초)
+        await new Promise((r) => setTimeout(r, 2000));
+      }
 
-      // 로그 수집 + running 감지
-      const onData = (chunk: Buffer) => {
-        const text = chunk.toString("utf-8");
-        state.logs.push(text);
-        if (state.logs.length > 200) state.logs.shift();
+      // ── 프론트엔드 시작 ──
+      state.proc = spawnServer(cmd, args, detected.root, extraEnv ?? {}, "frontend");
 
-        // 서버 시작 감지
-        if (
-          text.includes("localhost") ||
-          text.includes("Local:") ||
-          text.includes("Accepting connections") ||
-          text.includes("listening") ||
-          text.includes("ready") ||
-          text.includes("Started") ||
-          text.includes("Running on") ||
-          text.includes("debug service")
-        ) {
-          state.status = "running";
-        }
-      };
-
-      proc.stdout.on("data", onData);
-      proc.stderr.on("data", onData);
-
-      proc.on("close", (code) => {
-        const s = previews.get(projectPath);
-        if (s?.proc === proc) {
-          if (s.status !== "running") {
-            // 시작 전에 죽었으면 에러 상태로 유지 (5분 후 정리)
-            s.status = "error";
-            s.logs.push(`\n[process exited with code ${code}]\n`);
-            setTimeout(() => {
-              const cur = previews.get(projectPath);
-              if (cur === s) previews.delete(projectPath);
-            }, 300000);
-          } else {
-            previews.delete(projectPath);
-          }
-        }
-      });
-
-      proc.on("error", (err) => {
-        state.status = "error";
-        state.logs.push(`\n[process error: ${err.message}]\n`);
-      });
-
-      // 10분 타임아웃
+      // 10분 타임아웃 (프론트엔드 기준)
       setTimeout(() => {
         const s = previews.get(projectPath);
-        if (s?.proc === proc) {
-          proc.kill("SIGTERM");
+        if (s?.proc === state.proc) {
+          state.proc?.kill("SIGTERM");
+          state.backendProc?.kill("SIGTERM");
           previews.delete(projectPath);
         }
       }, 10 * 60 * 1000);
