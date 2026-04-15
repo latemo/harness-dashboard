@@ -876,11 +876,7 @@ function LogLine({ entry, expanded, onToggle }: { entry: LogEntry; expanded: boo
 
     case "result":
       if (!entry.data) return null;
-      return (
-        <div className="text-green-400 py-1 mt-2 border-t border-white/10 pt-2 whitespace-pre-wrap">
-          {entry.data.length > 500 ? entry.data.slice(0, 500) + "\n...(결과 일부 생략)" : entry.data}
-        </div>
-      );
+      return <ResultEntry data={entry.data} />;
 
     case "stderr":
     case "error":
@@ -893,4 +889,22 @@ function LogLine({ entry, expanded, onToggle }: { entry: LogEntry; expanded: boo
     default:
       return <div className="text-gray-300 py-0.5">{entry.data}</div>;
   }
+}
+
+function ResultEntry({ data }: { data: string }) {
+  const [expanded, setExpanded] = useState(data.length <= 800);
+  const preview = data.slice(0, 800);
+  return (
+    <div className="text-green-400 py-1 mt-2 border-t border-white/10 pt-2 whitespace-pre-wrap">
+      {expanded ? data : preview + (data.length > 800 ? "…" : "")}
+      {data.length > 800 && (
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-1 block text-xs text-green-600 hover:text-green-400 underline"
+        >
+          {expanded ? "접기" : `더 보기 (${data.length}자)`}
+        </button>
+      )}
+    </div>
+  );
 }

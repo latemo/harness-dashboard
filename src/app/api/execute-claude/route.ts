@@ -131,7 +131,12 @@ function executeWithCli(projectPath: string, prompt: string, continueSession: bo
           try {
             const event = JSON.parse(line);
             const parsed = parseClaudeEvent(event);
-            if (parsed) send(parsed);
+            if (!parsed) continue;
+            if (parsed.type === "__multi__") {
+              for (const e of parsed.events as Record<string, unknown>[]) send(e);
+            } else {
+              send(parsed);
+            }
           } catch {
             send({ type: "stdout", data: line });
           }
@@ -150,7 +155,13 @@ function executeWithCli(projectPath: string, prompt: string, continueSession: bo
           try {
             const event = JSON.parse(buffer);
             const parsed = parseClaudeEvent(event);
-            if (parsed) send(parsed);
+            if (parsed) {
+              if (parsed.type === "__multi__") {
+                for (const e of parsed.events as Record<string, unknown>[]) send(e);
+              } else {
+                send(parsed);
+              }
+            }
           } catch {
             send({ type: "stdout", data: buffer });
           }
@@ -277,26 +288,28 @@ function parseClaudeEvent(event: Record<string, unknown>): Record<string, unknow
     if (!message?.content) return null;
 
     const contents = message.content as Array<Record<string, unknown>>;
+    const events: Record<string, unknown>[] = [];
 
     for (const content of contents) {
       if (content.type === "text" && content.text) {
-        return { type: "assistant_text", data: content.text as string };
-      }
-      if (content.type === "tool_use") {
+        const text = (content.text as string).trim();
+        if (text) events.push({ type: "assistant_text", data: text });
+      } else if (content.type === "tool_use") {
         const toolName = content.name as string;
         const input = content.input as Record<string, unknown>;
-        return {
+        events.push({
           type: "tool_use",
           data: summarizeToolUse(toolName, input),
           tool: toolName,
           detail: getToolDetail(toolName, input),
-        };
+        });
       }
-      if (content.type === "thinking") {
-        return null;
-      }
+      // thinking은 무시
     }
-    return null;
+
+    // 여러 content가 있으면 첫 번째만 반환 (send는 단일 이벤트만 처리)
+    // → 호출부에서 복수 이벤트를 처리할 수 있도록 배열로 반환
+    return events.length === 1 ? events[0] : events.length > 1 ? { type: "__multi__", events } : null;
   }
 
   if (type === "user") {
