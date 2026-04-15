@@ -63,8 +63,8 @@ function detectProjectType(projectPath: string): {
           const envContent = fs.readFileSync(envFile, "utf-8");
           const portMatch = envContent.match(/^PORT\s*=\s*(\d+)/m);
           if (portMatch) bePort = parseInt(portMatch[1]);
-          // FRONTEND_URL에서 포트 추출 → 프론트엔드를 이 포트로 실행
-          const feUrlMatch = envContent.match(/^FRONTEND_URL\s*=\s*http:\/\/[^:]+:(\d+)/m);
+          // FRONTEND_URL에서 포트 추출 → 프론트엔드를 이 포트로 실행 (따옴표 있/없 모두 처리)
+          const feUrlMatch = envContent.match(/^FRONTEND_URL\s*=\s*["']?https?:\/\/[^:'"]+:(\d+)/m);
           if (feUrlMatch) fePort = parseInt(feUrlMatch[1]);
         }
         return { feDir, beDir, bePort, fePort };
