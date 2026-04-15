@@ -434,12 +434,15 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
                   const deduped = prev.filter((h) => h.timestamp !== historyEntry.timestamp);
                   return [...deduped, historyEntry].slice(-20);
                 });
+                // 히스토리에 추가됐으므로 현재 실행 말풍선 제거 (중복 방지)
+                setSubmittedPrompt("");
               }
             } else if (entry.type === "complete") {
               setStatus((prev) => (prev === "running" ? "complete" : prev));
               setHasSession(true);
               setPrompt("");
               deleteServerState(storageKey);
+              setSubmittedPrompt("");
               setTimeout(detectPreview, 500);
             } else if (entry.type === "error") {
               setStatus("error");
@@ -449,6 +452,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
               setHasSession(true);
               setPrompt("");
               deleteServerState(storageKey);
+              setSubmittedPrompt("");
               setTimeout(detectPreview, 500);
             }
           } catch {
@@ -462,6 +466,7 @@ export default function ExecutionPanel({ projectPath, agentCount, harnessNumber,
           setHasSession(true);
           setPrompt("");
           deleteServerState(storageKey);
+          setSubmittedPrompt("");
           setTimeout(detectPreview, 500);
           return "complete";
         }
